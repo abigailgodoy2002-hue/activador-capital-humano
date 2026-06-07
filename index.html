@@ -23,19 +23,59 @@
 
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycby1iPESCLXL5xaqzDPWRpigTFNwvvnuw1idKgFdMIq6KDJtFrZ1m22JeBW8SmhvCShn/exec";
 
-const callAI = async (prompt, maxTokens = 1000) => {
-  const res = await fetch("/.netlify/functions/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: maxTokens,
-      messages: [{ role: "user", content: prompt }]
-    })
-  });
-  const data = await res.json();
-  const text = data.content?.[0]?.text || "";
-  return JSON.parse(text.replace(/```json|```/g, "").trim());
+const ACCIONES = {
+  empatia: {
+    intro: "Tu don de escucha es tu mayor activo. Acá tenés el camino exacto para convertirlo en ingresos en 15 días.",
+    pasos: [
+      { numero: 1, titulo: "Configurá tu WhatsApp Business", detalle: "Descargá WhatsApp Business y completá tu perfil con foto profesional, descripción del servicio y horario de atención. Activá el mensaje de bienvenida automático: 'Hola! Gracias por escribirme. Soy [tu nombre], especialista en atención al cliente. Te respondo en menos de 1 hora.'" },
+      { numero: 2, titulo: "Armá tu propuesta de valor", detalle: "Escribí en una hoja cómo te vas a presentar: 'Soy Asistente de Atención al Cliente. Gestiono tu WhatsApp para que no pierdas ventas por respuestas lentas. Atiendo consultas, cierro ventas y fidelizo clientes con comunicación cálida y profesional.'" },
+      { numero: 3, titulo: "Identificá tus 10 prospectos", detalle: "Buscá en Instagram o Google: consultorios médicos, estéticas, tiendas online y profesionales independientes de tu zona. Fijate en sus redes si tardan en responder o tienen comentarios sin contestar. Esos son tus clientes ideales." },
+      { numero: 4, titulo: "Enviá tu primer mensaje de prospección", detalle: "Usá el script que te damos abajo. Enviá a 3 personas por día. No mandes el mismo mensaje a todos a la vez — personalizá el nombre y el negocio. El objetivo es conseguir 1 llamada de 10 minutos." },
+      { numero: 5, titulo: "Cerrá tu primer cliente", detalle: "En la llamada de 10 minutos preguntá: '¿Cuántos mensajes recibís por día? ¿Podés atenderlos todos a tiempo?' Escuchá el problema y ofrecé una prueba de 7 días gratis. Si queda satisfecho, cobrás desde el día 8." }
+    ],
+    script_titulo: "Tu mensaje para conseguir el primer cliente",
+    script: "Hola [Nombre]! Vi que tu negocio [nombre del negocio] tiene mucha actividad. Noto que a veces las respuestas en WhatsApp se demoran, lo que puede hacer perder clientes potenciales.\n\nMe especializo en gestión de atención al cliente por WhatsApp — me encargo de responder consultas, dar información y acompañar al cliente hasta la compra, con comunicación cálida y profesional.\n\n¿Te gustaría que coordinemos una llamada de 10 minutos para contarte cómo puedo ayudarte?",
+    consejo_final: "El primer cliente no llega por tener el perfil perfecto — llega por dar el primer mensaje. Enviá hoy, no mañana."
+  },
+  analitico: {
+    intro: "Tu mente ordenada es exactamente lo que los negocios caóticos necesitan. Acá tenés el plan exacto para empezar a cobrar por eso.",
+    pasos: [
+      { numero: 1, titulo: "Descargá las plantillas base", detalle: "Creá en Google Sheets 3 plantillas: (1) Flujo de caja diaria con columnas: fecha, concepto, ingreso, egreso, saldo. (2) Control de stock: producto, cantidad, precio, alerta de reposición. (3) Presupuesto y facturación: cliente, servicio, monto, estado de pago." },
+      { numero: 2, titulo: "Practicá con datos reales o inventados", detalle: "Cargá datos ficticios de un negocio imaginario durante 3 días. Esto te va a permitir mostrar las planillas en acción cuando hables con clientes. Una planilla con datos es mil veces más convincente que una vacía." },
+      { numero: 3, titulo: "Armá tu presentación de servicio", detalle: "No te presentés como 'alguien que sabe Excel'. Tu título es: Asistente de Control Operativo para Negocios. Tu propuesta: 'Te ayudo a frenar las pérdidas invisibles de tu negocio ordenando tus números y stock, para que sepas exactamente cuánto ganás y qué tenés disponible.'" },
+      { numero: 4, titulo: "Identificá negocios con caos administrativo", detalle: "Buscá en tu entorno: locales de ropa, dietéticas, distribuidoras, emprendedores de e-commerce. Si tienen muchos productos y atienden por WhatsApp, probablemente no tienen control de nada. Esos son tus clientes." },
+      { numero: 5, titulo: "Ofrecé una auditoría gratuita de 20 minutos", detalle: "Contactá a 3 emprendedores y ofreceles revisar GRATIS cómo llevan sus números ahora. En esos 20 minutos vas a encontrar el caos — y ahí mostrás cómo tus planillas lo resuelven. El cierre es natural." }
+    ],
+    script_titulo: "Tu mensaje para ofrecer la auditoría gratuita",
+    script: "Hola [Nombre]! Soy [tu nombre], me especializo en control operativo para negocios como el tuyo.\n\nEstoy ofreciendo una auditoría gratuita de 20 minutos para revisar cómo está organizada la parte administrativa de tu negocio — números, stock y facturación.\n\nMuchos negocios tienen pérdidas invisibles simplemente por no tener el control ordenado. En 20 minutos te muestro dónde están y cómo resolverlo.\n\n¿Te interesa? ¿Cuándo tenés 20 minutos esta semana?",
+    consejo_final: "No vendas Excel — vendé tranquilidad. El dueño de negocio no quiere planillas, quiere saber cuánto ganó este mes sin hacer cuentas."
+  },
+  comunicador: {
+    intro: "Tu facilidad para comunicar vale dinero real. Las marcas pagan hoy por exactamente lo que vos hacés de forma natural.",
+    pasos: [
+      { numero: 1, titulo: "Aprendé la fórmula de guion UGC", detalle: "Todo video que vende tiene esta estructura: GANCHO (primeros 3 segundos — una pregunta o afirmación que sorprende) + DOLOR (el problema que tiene tu audiencia) + SOLUCIÓN (el producto como respuesta) + CTA (llamado a la acción claro). Escribí esta fórmula en un papel y tenela a mano siempre." },
+      { numero: 2, titulo: "Armá tu estética de filmación", detalle: "El estándar UGC que las marcas pagan bien: luz natural de frente (cerca de una ventana), fondo neutro y ordenado (pared blanca, estante prolijo), plano medio o primer plano, audio limpio. Practicá con el celular que tenés — no necesitás nada más." },
+      { numero: 3, titulo: "Grabá tu portafolio express", detalle: "Elegí 3 productos que ya tenés en casa (crema, termo, zapatillas, libro). Grabá 1 video de cada uno aplicando la fórmula. No importa que no sean productos de marcas conocidas — lo que mostrás es tu estilo, tu forma de hablar y tu manejo de cámara." },
+      { numero: 4, titulo: "Subí tu portafolio a Instagram o TikTok", detalle: "Creá una cuenta específica para tu trabajo UGC o usá la tuya. Subí los 3 videos con el texto: 'Creadora de contenido UGC disponible para marcas. Contacto por DM.' Esto es tu carta de presentación visual." },
+      { numero: 5, titulo: "Contactá marcas de e-commerce", detalle: "Buscá en Instagram marcas de skincare, moda, accesorios o productos del hogar con menos de 50k seguidores — esas marcas necesitan contenido y no tienen presupuesto para agencias. Escribiles por DM o mail con tu propuesta." }
+    ],
+    script_titulo: "Tu mensaje para contactar marcas",
+    script: "Hola [nombre de la marca]! Soy [tu nombre], creadora de contenido UGC especializada en videos auténticos que generan confianza y conversión.\n\nMe encanta lo que hacen con [nombre del producto o categoría] y me gustaría colaborar creando contenido real y cercano para su comunidad.\n\nTengo disponible mi portafolio con ejemplos de mi estilo. ¿Les interesaría verlo? Trabajo con tarifas accesibles y entrega rápida.\n\n[link a tu perfil o portafolio]",
+    consejo_final: "Tu primer video no tiene que ser perfecto — tiene que ser real. Las marcas no buscan producción de Hollywood, buscan autenticidad. Grabá hoy."
+  },
+  organizador: {
+    intro: "Mientras todos apagan incendios, vos ya tenés todo bajo control. Ese don tiene precio — y es hora de cobrarlo.",
+    pasos: [
+      { numero: 1, titulo: "Elegí tus herramientas de trabajo", detalle: "Definí con qué vas a trabajar: Notion (ideal para bases de datos y wikis de equipo), Trello (ideal para tableros de proyectos visuales) o Asana (ideal para equipos con tareas y deadlines). Creá una cuenta gratuita en la que más te guste y explorála durante 2 días." },
+      { numero: 2, titulo: "Armá una demo de tu sistema", detalle: "Creá un espacio de trabajo ficticio que muestre cómo organizarías los proyectos de un cliente. Por ejemplo: un tablero con columnas 'Por hacer / En proceso / Listo', tareas con fechas límite y etiquetas por prioridad. Eso es tu portafolio." },
+      { numero: 3, titulo: "Definí tu servicio y precio", detalle: "Tu servicio es: Asistente Virtual y Coordinadora de Proyectos. Podés ofrecer: gestión de agenda y reuniones, coordinación de tareas de equipo, seguimiento de proyectos y reportes semanales de avance. Precio sugerido para empezar: paquete mensual de 4-8 horas semanales." },
+      { numero: 4, titulo: "Identificá tus clientes ideales", detalle: "Buscá en LinkedIn o Instagram: coaches, consultores, psicólogos, diseñadores o cualquier profesional independiente que tenga muchos clientes y poco tiempo. Si su bio dice 'agenda completa' o 'lista de espera', ese es tu cliente — está desbordado y necesita ayuda." },
+      { numero: 5, titulo: "Ofrecé una semana de prueba", detalle: "Contactá a 3 profesionales independientes y ofrecé trabajar con ellos 1 semana gratis gestionando su agenda y tareas. Al final de la semana van a ver la diferencia — y van a querer seguir. Ese es tu cierre natural." }
+    ],
+    script_titulo: "Tu mensaje para conseguir el primer cliente",
+    script: "Hola [Nombre]! Vi tu trabajo como [profesión] y noto que tenés mucha demanda — felicitaciones por eso.\n\nSoy [tu nombre], Asistente Virtual especializada en coordinación de proyectos y gestión de agenda. Me encargo de que nada se pierda, nada se olvide y todo avance — para que vos te enfoques en lo que realmente hace crecer tu negocio.\n\nTe propongo una semana de prueba sin costo para que veas cómo trabajo. ¿Tenés 15 minutos esta semana para contarme qué necesitás?",
+    consejo_final: "El caos que vos ves como obvio de resolver, para tu cliente es una carga diaria. No subestimes cuánto vale para ellos tener a alguien que lo ordene."
+  }
 };
 
 const COLORS = {
@@ -131,9 +171,8 @@ function App() {
 
   const generarAccion = async () => {
     setStep("loadingAccion");
-    const planBase = PLANS[perfil];
-    const prompt = `Coach experto en activación de ingresos online. Perfil: "${planBase.perfil}". Servicio: "${planBase.servicio}". Generá en español argentino (tuteo informal). SOLO JSON sin backticks: {"intro":"1 oración motivadora","pasos":[{"numero":1,"titulo":"título","detalle":"instrucción concreta"},{"numero":2,"titulo":"...","detalle":"..."},{"numero":3,"titulo":"...","detalle":"..."},{"numero":4,"titulo":"...","detalle":"..."},{"numero":5,"titulo":"...","detalle":"..."}],"script_titulo":"título script","script":"texto listo para copiar con [corchetes]","consejo_final":"1 consejo clave"}`;
-    try { setAiAccion(await callAI(prompt, 1500)); } catch { setAiAccion(null); }
+    const accion = ACCIONES[perfil];
+    setAiAccion(accion);
     setStep("accion");
   };
 
