@@ -21,17 +21,12 @@
   <div id="root"></div>
   <script type="text/babel">
 
-const API_KEY = "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";
 const SHEETS_URL = "https://script.google.com/macros/s/AKfycby1iPESCLXL5xaqzDPWRpigTFNwvvnuw1idKgFdMIq6KDJtFrZ1m22JeBW8SmhvCShn/exec";
 
 const callAI = async (prompt, maxTokens = 1000) => {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+  const res = await fetch("/.netlify/functions/chat", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": API_KEY,
-      "anthropic-version": "2023-06-01"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       model: "claude-sonnet-4-20250514",
       max_tokens: maxTokens,
