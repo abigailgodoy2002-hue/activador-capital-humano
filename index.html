@@ -3,275 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Activador de Capital Humano — Test de Potencial</title>
+  <title>Activador de Capital Humano</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.35.0/font/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f8f6; color: #262626; min-height: 100vh; -webkit-font-smoothing: antialiased; }
-    input { font-family: inherit; font-size: 15px; padding: 12px 16px; border: 1px solid #e5e5e0; border-radius: 8px; width: 100%; outline: none; background: #fff; color: #262626; transition: border-color 0.2s; margin-bottom: 12px; }
-    input:focus { border-color: #737373; }
-    button { font-family: inherit; cursor: pointer; transition: all 0.2s ease; border: none; }
-    a { color: inherit; text-decoration: none; }
-    .premium-blur { filter: blur(5px); opacity: 0.3; pointer-events: none; user-select: none; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f8f6; color: #262626; min-height: 100vh; }
+    input { font-family: inherit; font-size: 15px; padding: 12px 16px; border: 1px solid #e5e5e0; border-radius: 8px; width: 100%; margin-bottom: 12px; outline: none; }
+    button { font-family: inherit; cursor: pointer; border: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
 
-const ACCESS_CODE = "AMAN2026";
-
-const COLORS = {
-  empatia:     { bg: "#fcf8f5", border: "#dfcfc4", text: "#4a3b32", accent: "#705c51", badge: "#eedfd5" }, 
-  analitico:   { bg: "#f4f5f6", border: "#cbd5e1", text: "#1e293b", accent: "#475569", badge: "#e2e8f0" }, 
-  comunicador: { bg: "#fafaf9", border: "#d6d3d1", text: "#292524", accent: "#57534e", badge: "#e7e5e4" }, 
-  organizador: { bg: "#f5f5f4", border: "#e7e5e4", text: "#1c1917", accent: "#44403c", badge: "#d6d3d1" }, 
-  bienestar:   { bg: "#f6f7f5", border: "#ccd1c7", text: "#353d2f", accent: "#535e4b", badge: "#e2e6df" }, 
-};
-
-const QUESTIONS = [
-  { id: "q1", text: "Cuando alguien tiene un problema, ¿qué hacés primero?", options: [
-    { label: "Escucho y trato de entender cómo se siente", value: "empatia" },
-    { label: "Analizo los datos y busco la causa raíz", value: "analitico" },
-    { label: "Empiezo a hablar y buscar soluciones juntos", value: "comunicador" },
-    { label: "Organizo la información para que sea más claro", value: "organizador" },
-    { label: "Busco restablecer su equilibrio emocional y energético", value: "bienestar" }
-  ]},
-  { id: "q2", text: "¿Con qué actividad te sentirías más cómodo/a trabajando?", options: [
-    { label: "Acompañar a alguien en un proceso difícil", value: "empatia" },
-    { label: "Controlar números o procesos operativos", value: "analitico" },
-    { label: "Crear contenido o presentar ideas en redes", value: "comunicador" },
-    { label: "Coordinar tareas, agendas y proyectos", value: "organizador" },
-    { label: "Promover hábitos saludables, alimentación consciente y calma", value: "bienestar" }
-  ]},
-  { id: "q3", text: "¿Qué te dicen que hacés muy bien?", options: [
-    { label: "Que soy comprensivo/a y la gente confía en mí", value: "empatia" },
-    { label: "Que soy muy ordenado/a y detallista", value: "analitico" },
-    { label: "Que tengo facilidad para hablar y convencer", value: "comunicador" },
-    { label: "Que siempre tengo todo bajo control y en tiempo", value: "organizador" },
-    { label: "Que transmito paz, armonía y sé cuidar el cuerpo/mente", value: "bienestar" }
-  ]},
-  { id: "q4", text: "Si tuvieras que generar ingresos mañana, ¿qué elegiría tu instinto?", options: [
-    { label: "Ayudar a alguien directamente con mi tiempo", value: "empatia" },
-    { label: "Ofrecer control y orden a un negocio que lo necesita", value: "analitico" },
-    { label: "Crear contenido y conectar marcas con personas", value: "comunicador" },
-    { label: "Gestionar proyectos o equipos de manera remota", value: "organizador" },
-    { label: "Guiar a otros hacia un estilo de vida más sano y equilibrado", value: "bienestar" }
-  ]},
-  { id: "q5", text: "¿Qué herramienta usás (o usarías) con más naturalidad?", options: [
-    { label: "WhatsApp para comunicarme y dar soporte", value: "empatia" },
-    { label: "Excel o planillas para llevar registros", value: "analitico" },
-    { label: "El celular para grabar y editar videos", value: "comunicador" },
-    { label: "Notion, Trello o Google Calendar para organizar", value: "organizador" },
-    { label: "Espacios de meditación, recetas sanas o rutinas de cuidado", value: "bienestar" }
-  ]},
-  { id: "q6", text: "¿En qué tipo de ambiente preferís pasar tus mañanas productivas?", options: [
-    { label: "En contacto constante respondiendo dudas y guiando personas", value: "empatia" },
-    { label: "En silencio, analizando métricas, reportes o estructuras", value: "analitico" },
-    { label: "Ideando conceptos visuales, marcas o guiones creativos", value: "comunicador" },
-    { label: "Diseñando cronogramas y delegando flujos de tareas", value: "organizador" },
-    { label: "Un entorno armónico, rodeado de plantas, aromas y bienestar integral", value: "bienestar" }
-  ]},
-  { id: "q7", text: "¿Cuál de estos temas leerías o investigarías por puro placer?", options: [
-    { label: "Historias de superación personal o psicología vincular", value: "empatia" },
-    { label: "Estrategias de inversión, software eficiente o finanzas", value: "analitico" },
-    { label: "Tendencias de marketing digital, algoritmos y storytelling", value: "comunicador" },
-    { label: "Metodologías ágiles, organización del tiempo y productividad", value: "organizador" },
-    { label: "Alimentación basada en plantas, yoga, aceites esenciales o mindfulness", value: "bienestar" }
-  ]},
-  { id: "q8", text: "Si pudieras resolverle un problema clave a un emprendedor, ¿cuál elegirías?", options: [
-    { label: "Que sus clientes se sientan amados y escuchados en todo momento", value: "empatia" },
-    { label: "Que descubra exactamente dónde está perdiendo dinero en sus cuentas", value: "analitico" },
-    { label: "Que su marca destaque en redes y atraiga miradas de inmediato", value: "comunicador" },
-    { label: "Que consiga estructurar su desorden diario y gane horas libres", value: "organizador" },
-    { label: "Que aprenda a bajar el estrés, comer limpio y equilibrar su rutina diaria", value: "bienestar" }
-  ]}
-];
-
-const PLANS = {
-  empatia:     { perfil: "Gestión de WhatsApp", titulo: "Tu capital es la conexión humana", servicio: "Gestor/a de Atención al Cliente vía WhatsApp", icon: "ti-message-circle" },
-  analitico:   { perfil: "Asistente de Control Operativo", titulo: "Tu capital es el orden y la precisión", servicio: "Asistente de Control Operativo para Negocios", icon: "ti-chart-line" },
-  comunicador: { perfil: "Creador/a UGC", titulo: "Tu capital es tu voz y tu presencia", servicio: "Creador/a de Contenido UGC", icon: "ti-video" },
-  organizador: { perfil: "Asistente Virtual / Project Manager", titulo: "Tu capital es tu capacidad de coordinación", servicio: "Asistente Virtual y Coordinador/a de Proyectos", icon: "ti-layout-kanban" },
-  bienestar:   { perfil: "Consultoría de Bienestar y Vida Consciente", titulo: "Tu capital es el equilibrio integral", servicio: "Planner y Coach de Estilo de Vida Saludable", icon: "ti-leaf" },
-};
-
-const PLANES_PREMIUM = {
-  empatia: {
-    propuesta: "«Soy especialista en atención al cliente por WhatsApp. Me encargo de que ningún mensaje quede sin respuesta, convierto consultas en ventas y fidelizo clientes con comunicación cálida y profesional.»",
-    pasos: [
-      { titulo: "Configurá tu perfil profesional en WhatsApp Business", detalle: "Descargá WhatsApp Business. Configurá tu foto con fondo neutro, descripción comercial estratégica y mensajes automáticos.", tiempo: "45 minutos" },
-      { titulo: "Creá tu kit de respuestas rápidas", detalle: "Configurá atajos clave (/precio, /bienvenida) para optimizar tus tiempos de interacción diaria.", tiempo: "1 hora" }
-    ],
-    mensajes: [{ titulo: "Contacto inicial con prospecto", texto: "Hola [Nombre]! Noto que a veces los mensajes en tu canal tardan en responderse. ¿Tenés 15 minutos para un diagnóstico sin cargo?" }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Abonos mensuales fijos", "Cobro por adelantado"] },
-    frase: "Las personas no pagan por respuestas — pagan por la tranquilidad de saber que sus clientes están bien atendidos."
-  },
-  analitico: {
-    propuesta: "«Soy Asistente de Control Operativo. Organizo los números, stock y facturación de tu negocio en planillas profesionales para que sepas exactamente cuánto ganás.»",
-    pasos: [
-      { titulo: "Creá tus 3 plantillas maestras en Google Sheets", detalle: "Flujo de caja, control de stock automatizado y deudas pendientes.", tiempo: "3 horas" }
-    ],
-    mensajes: [{ titulo: "Contacto inicial con prospecto", texto: "Hola [Nombre], me especializo en control operativo. ¿Sabés exactamente cuánto ganaste libre el mes pasado?" }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Precio fijo por armado de sistema", "Fee de mantenimiento mensual"] },
-    frase: "Los números no mienten — y vos tienes el don de leerlos de forma estratégica."
-  },
-  comunicador: {
-    propuesta: "«Soy Creadora de Contenido UGC. Creo videos auténticos y persuasivos que muestran tu producto de forma real, generando la confianza que convierte seguidores en compradores.»",
-    pasos: [
-      { titulo: "Dominá la fórmula de guion UGC", detalle: "Gancho de impacto (0-3 seg), planteo del problema cotidiano, solución y llamado a la acción.", tiempo: "2 horas" }
-    ],
-    mensajes: [{ titulo: "DM a marca en Instagram", texto: "Hola [Marca]! Soy creadora UGC especializada en videos auténticos... ¿Les interesa una propuesta visual?" }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Precio por pieza individual o pack mensual"] },
-    frase: "Tu voz vale dinero. Las marcas lo saben — solo están esperando que vos se los digas."
-  },
-  organizador: {
-    propuesta: "«Soy Asistente Virtual y Coordinadora de Proyectos. Me encargo de que nada se pierda y todo avance según lo planeado para que te enfoques en expandir tu negocio.»",
-    pasos: [
-      { titulo: "Elegí tu herramienta principal", detalle: "Especializate en Notion o Trello diseñando espacios de gestión ágiles.", tiempo: "2 días" }
-    ],
-    mensajes: [{ titulo: "Primer mensaje a prospecto", texto: "Hola [Nombre]! Sé lo complejo que es gestionar la administración diaria siendo independiente. Te ofrezco una semana de soporte libre..." }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Paquetes mensuales basados en horas semanales"] },
-    frase: "El caos que vos ves como obvio de resolver, para tu cliente es una carga diaria que lo agota."
-  },
-  bienestar: {
-    propuesta: "«Soy Consultora de Bienestar y Estilo de Vida. Ayudo a profesionales desbordados a estructurar programas de hábitos saludables, alimentación limpia, rutinas de balance corporal y gestión del estrés.»",
-    pasos: [
-      { titulo: "Estructurá tu catálogo de 3 Rutinas Base", detalle: "Diseñá tres guías premium en PDF: Transición a alimentación limpia, Rituales de mañana para reducción del estrés, Plan de organización.", tiempo: "4 horas" }
-    ],
-    mensajes: [{ titulo: "Mensaje a cliente potencial desbordado", texto: "Hola [Nombre]! Noto que llevás un ritmo de trabajo súper intenso. ¿Te propongo una sesión de diagnóstico de hábitos de 20 minutos sin cargo?" }],
-    precios: { titulo: "Estrategia de Cobro Holístico", items: ["Plan de acompañamiento personalizado de 15 días."] },
-    frase: "El mayor capital de una persona es su salud y equilibrio interno."
-  }
-};
-
 function App() {
   const [pantalla, setPantalla] = React.useState("nombre");
-  const [current, setCurrent] = React.useState(0);
-  const [respuestas, setRespuestas] = React.useState({});
-  const [selected, setSelected] = React.useState(null);
-  
   const [nombre, setNombre] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [telefono, setTelefono] = React.useState("");
-  
-  const [isPremiumUnlocked, setIsPremiumUnlocked] = React.useState(false);
-  const [inputCode, setInputCode] = React.useState("");
-  const [codeError, setCodeError] = React.useState("");
-
-  const [perfil, setPerfil] = React.useState(null);
-  const [plan, setPlan] = React.useState(null);
-  const [planPremium, setPlanPremium] = React.useState(null);
-
-  const c = perfil ? COLORS[perfil] : COLORS.analitico;
-
-  const handleNext = () => {
-    if (!selected) return;
-    const newResp = { ...respuestas, [QUESTIONS[current].id]: selected };
-    setRespuestas(newResp);
-    setSelected(null);
-    
-    if (current < QUESTIONS.length - 1) { 
-      setCurrent(current + 1); 
-    } else {
-      setPantalla("captura");
-    }
-  };
 
   const handleSubmitLead = async (e) => {
     e.preventDefault();
-    if (!nombre || !email || !telefono) {
-      alert("Por favor, completá todos los campos.");
-      return;
-    }
+    if (!nombre || !email || !telefono) return;
 
     const formAction = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeu3k2r7O6w6yC6fV9M0hVn8-Z4Y_VqD_V7y2uXv9-kF9z3wA/formResponse";
-    const idNombre = "entry.364372982";
-    const idEmail = "entry.821946351";
-    const idTelefono = "entry.142958374";
-
     const formData = new FormData();
-    formData.append(idNombre, nombre);
-    formData.append(idEmail, email);
-    formData.append(idTelefono, telefono);
+    formData.append("entry.364372982", nombre);
+    formData.append("entry.821946351", email);
+    formData.append("entry.142958374", telefono);
 
     try {
-      await fetch(formAction, {
-        method: "POST",
-        body: formData,
-        mode: "no-cors"
-      });
-      console.log("Contacto guardado con éxito.");
+      await fetch(formAction, { method: "POST", body: formData, mode: "no-cors" });
     } catch (error) {
-      console.error("Error al guardar datos:", error);
+      console.error(error);
     }
 
-    const p = calcularPerfil(respuestas);
-    setPerfil(p);
-    setPlan(PLANS[p]);
-    setPlanPremium(PLANES_PREMIUM[p]);
     setPantalla("resultado");
   };
 
-  const procesarCodigoPremium = () => {
-    if (inputCode.trim().toUpperCase() === ACCESS_CODE) {
-      setIsPremiumUnlocked(true);
-      setCodeError("");
-    } else {
-      setCodeError("Código incorrecto. Verificá tu comprobante.");
-    }
-  };
-
-  const reiniciarTest = () => {
-    setPantalla("nombre");
-    setCurrent(0);
-    setRespuestas({});
-    setPerfil(null);
-    setPlan(null);
-    setPlanPremium(null);
-    setNombre("");
-    setEmail("");
-    setTelefono("");
-    setInputCode("");
-    setIsPremiumUnlocked(false);
-  };
-
-  const progress = Math.round(((current + 1) / QUESTIONS.length) * 100);
-  const w = { maxWidth: 640, margin: "0 auto", padding: "2.5rem 1.25rem" };
-  const card = { background: "#fff", border: "1px solid #e5e5e0", borderRadius: 12, padding: "1.75rem 2rem", marginBottom: "1.25rem" };
-  const lbl = { fontSize: 11, color: "#737373", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10, display: "block", fontWeight: 600 };
-  const btnD = (bg) => ({ background: bg || "#262626", border: "none", borderRadius: 8, padding: "14px 28px", fontSize: 15, fontWeight: 500, color: "#fff", width: "100%" });
-  const btnO = { background: "transparent", border: "1px solid #d4d4d4", borderRadius: 8, padding: "12px 28px", fontSize: 14, color: "#404040", width: "100%", marginTop: 15, fontWeight: 500 };
-
   if (pantalla === "nombre") return (
-    <div style={{ ...w, minHeight: "90vh", display: "flex", alignItems: "center" }}>
-      <div style={{ width: "100%" }}>
-        <div style={{ background: "#262626", borderRadius: 12, padding: "2.5rem 2rem", marginBottom: "1.25rem", textAlign: "center" }}>
-          <i className="ti ti-sparkles" style={{ fontSize: 36, color: "#dfcfc4", display: "block", marginBottom: 14 }} />
-          <h1 style={{ fontSize: 25, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10, letterSpacing: "-0.01em" }}>Activador de Capital Humano</h1>
-          <p style={{ fontSize: 15, color: "#d6d3d1", lineHeight: 1.6 }}>Descubrí qué propuesta digital se alinea de forma orgánica con tu estructura de talentos.</p>
-        </div>
-        <div style={card}>
-          <label style={lbl}>¿Cómo te llamás para iniciar?</label>
-          <input type="text" placeholder="Tu nombre" value={nombre} onChange={e => setNombre(e.target.value)} onKeyDown={e => e.key === "Enter" && nombre && setPantalla("scanner")} />
-          <button style={{ ...btnD(), marginTop: 10, opacity: nombre ? 1 : 0.4 }} disabled={!nombre} onClick={() => setPantalla("scanner")}>Empezar el escáner gratis →</button>
-        </div>
-      </div>
+    <div style={{ maxWidth: 500, margin: "100px auto", padding: 20, textAlign: "center" }}>
+      <h2>Activador de Capital Humano</h2>
+      <input type="text" placeholder="Tu nombre" value={nombre} onChange={e => setNombre(e.target.value)} />
+      <button onClick={() => setPantalla("captura")} style={{ background: "#262626", color: "#fff", padding: "12px 24px", borderRadius: 8, marginTop: 10 }}>Siguiente</button>
     </div>
   );
 
-  if (pantalla === "scanner") {
-    const q = QUESTIONS[current];
-    return (
-      <div style={w}>
-        <div style={{ height: 6, background: "#e5e5e0", borderRadius: 3, marginBottom: "2rem", overflow: "hidden" }}>
-          <div style={{ height: 6, width: `${progress}%`, background: "#404040", borderRadius: 3, transition: "width 0.4s" }} />
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-          <span style={{ ...lbl, margin: 0 }}>Mapeo de Potencial</span>
-          <span style={{ fontSize: 13, color: "#737373", fontWeight: 500 }}>Pregunta {current + 1} de {QUESTIONS.length}</span>
-        </div>
-        <h2 style={{ fontSize: 20, fontWeight: 500, marginBottom: "1.75rem", lineHeight
+  if (pantalla === "captura") return (
+    <div style={{ maxWidth: 500, margin: "100px auto", padding: 20 }}>
+      <h3>Dejanos tus datos para ver el resultado</h3>
+      <form onSubmit={handleSubmitLead}>
+        <input type="email" placeholder="Tu Email" value={email} onChange={e => setEmail(e.target.value)} required />
+        <input type="tel" placeholder="Tu WhatsApp" value={telefono} onChange={e => setTelefono(e.target.value)} required />
+        <button type="submit" style={{ background: "#262626", color: "#fff", padding: "12px 24px", borderRadius: 8, width: "100%" }}>Generar Diagnóstico</button>
+      </form>
+    </div>
+  );
+
+  if (pantalla === "resultado") return (
+    <div style={{ maxWidth: 500, margin: "100px auto", padding: 20, textAlign: "center" }}>
+      <h2>¡Gracias por participar, {nombre}!</h2>
+      <p style={{ marginTop: 10 }}>Pronto nos comunicaremos con vos para enviarte tu perfil optimizado.</p>
+    </div>
+  );
+
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
