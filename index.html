@@ -142,7 +142,7 @@ const PLANES_PREMIUM = {
     pasos: [
       { numero: 1, titulo: "Estructurá tu catálogo de 3 Rutinas Base", detalle: "Diseñá en Canva tres guías premium en PDF listas para adaptar a clientes: (1) Transición a alimentación limpia/consciente, (2) Rituales de mañana para reducción del estrés corporal, (3) Plan de organización y detox del hogar. Este catálogo estético es tu pilar comercial.", herramientas: [{ nombre: "Canva — Diseños Minimalistas", link: "https://canva.com", desc: "Para armar tus guías estéticas de hábitos" }], tiempo: "4 horas" },
       { numero: 2, titulo: "Aliate con marcas, estéticas o centros holísticos locales", detalle: "Presentate en centros de yoga, tiendas saludables o estéticas de tu zona. Ofreceles un taller corto de 30 minutos o empaquetar tus guías como un beneficio exclusivo para sus clientes recurrentes. Las alianzas físicas aceleran la confianza.", herramientas: [], tiempo: "3 horas" },
-      { numero: 3, titulo: "Ofrecé una 'Sesión de Diagnóstico de Rutinas' de 20 minutos", detalle: "Contactá personas en transición o emprendedores cansados. Revisá gratis sus tres principales fugas de bienestar: calidad del sueño, organization de comidas y niveles de ansiedad diaria. Cerrá ofreciendo tu acompañamiento de 15 días.", herramientas: [{ nombre: "Instagram — Búsqueda de Nicho", link: "https://instagram.com", desc: "Conectá con perfiles alineados a la vida sana" }], tiempo: "1 hora diaria" }
+      { numero: 3, titulo: "Ofrecé una 'Sesión de Diagnóstico de Rutinas' de 20 minutos", detalle: "Contactá personas en transición o emprendedores cansados. Revisá gratis sus tres principales fugas de bienestar: calidad del sueño, organización de comidas y niveles de ansiedad diaria. Cerrá ofreciendo tu acompañamiento de 15 días.", herramientas: [{ nombre: "Instagram — Búsqueda de Nicho", link: "https://instagram.com", desc: "Conectá con perfiles alineados a la vida sana" }], tiempo: "1 hora diaria" }
     ],
     mensajes: [
       { titulo: "Mensaje a cliente potencial desbordado", texto: "Hola [Nombre]! Noto que llevás un ritmo de trabajo súper intenso. Me especializo en diseño de rutinas de bienestar corporal y alimentación consciente para profesionales desbordados. Te propongo una sesión de diagnóstico de hábitos de 20 minutos sin cargo para armar tu plan de balance diario. ¿Te gustaría coordinar?" },
@@ -214,12 +214,14 @@ function App() {
     e.preventDefault();
     if (!nombre || !email || !telefono) return;
 
-    // CONEXIÓN MAESTRA CON TU GOOGLE FORMS:
+    // ENLACE DIRECTO DE ENVÍO CORREGIDO:
     const formAction = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeu3k2r7O6w6yC6fV9M0hVn8-Z4Y_VqD_V7y2uXv9-kF9z3wA/formResponse";
     const formData = new FormData();
-    formData.append("entry.364372982", nombre);
-    formData.append("entry.821946351", email);
-    formData.append("entry.142958374", telefono);
+    
+    // ASIGNACIÓN DE IDENTIFICADORES SECRETOS VERDADEROS:
+    formData.append("entry.254605929", nombre);
+    formData.append("entry.682390886", email);
+    formData.append("entry.652157797", telefono);
 
     try {
       await fetch(formAction, {
@@ -227,9 +229,9 @@ function App() {
         body: formData,
         mode: "no-cors"
       });
-      console.log("Lead guardado con éxito.");
+      console.log("Lead registrado correctamente.");
     } catch (error) {
-      console.error("Error al enviar los datos:", error);
+      console.error("Error al enviar datos:", error);
     }
 
     const p = calcularPerfil(respuestas);
