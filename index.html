@@ -7,7 +7,7 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/1.35.0/font/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f8f6; color: #262626; min-height: 100vh; -webkit-font-smoothing: antialiased; }
@@ -17,9 +17,9 @@
     a { color: inherit; text-decoration: none; }
     .premium-blur { filter: blur(6px); opacity: 0.25; pointer-events: none; user-select: none; transition: all 0.4s ease; }
     .fase-box { background: #fff; border: 1px solid #e5e5e0; border-radius: 10px; padding: 20px; margin-bottom: 16px; text-align: left; }
-    .fase-box h4 { font-size: 15px; font-weight: 600; margin-bottom: 12px; display: flex; alignItems: center; gap: 8px; }
+    .fase-box h4 { font-size: 15px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .fase-list { padding-left: 20px; color: #404040; font-size: 14px; }
-    .fase-list li { margin-bottom: 10px; lineHeight: 1.5; }
+    .fase-list li { margin-bottom: 10px; line-height: 1.5; }
     .fase-list li strong { color: #1a1a1a; }
   </style>
 </head>
@@ -38,7 +38,7 @@ const COLORS = {
 };
 
 const QUESTIONS = [
-  { id: "q1", text: "Cuando alguien tiene un problem, ¿qué hacés primero?", options: [
+  { id: "q1", text: "Cuando alguien tiene un problema, ¿qué hacés primero?", options: [
     { label: "Escucho y trato de entender cómo se siente", value: "empatia" },
     { label: "Analizo los datos y busco la causa raíz", value: "analitico" },
     { label: "Empiezo a hablar y buscar soluciones juntos", value: "comunicador" },
@@ -157,4 +157,252 @@ const DETALLES_OPERATIVOS = {
   ],
   organizador: [
     { fase: "Fase 1: El Tablero Kanban Operativo", items: [
-        "<strong>Estructura de 4 Columnas:</strong> Configurá Trello o Notion de izquierda a derecha con: (1) Ideas/Entrantes, (2) Prioridades de la semana [Máximo 5], (3) En Proceso/Bloqueado, y (4) Hecho
+        "<strong>Estructura de 4 Columnas:</strong> Configurá Trello o Notion de izquierda a derecha con: (1) Ideas/Entrantes, (2) Prioridades de la semana [Máximo 5], (3) En Proceso/Bloqueado, y (4) Hecho (Done). Vacía la última columna los viernes para mostrar progreso visual."
+      ]},
+    { fase: "Fase 2: La Semana de Descompresión", items: [
+        "<strong>Ordenamiento de Activos:</strong> Tomá el control de su bandeja de entrada, organizá sus carpetas de Google Drive con nombres lógicos y limpiá su agenda diaria. Al final de la semana, demostrale con números que le devolviste de 5 a 8 horas libres reales."
+      ]},
+    { fase: "Fase 3: Gestión Asincrónica Eficiente", items: [
+        "<strong>Reporte Diario Concluyente:</strong> Armá un grupo de WhatsApp llamado '[Nombre] + Operaciones'. Prohibí llamadas espontáneas y mandá un único mensaje consolidado a las 18:00 hs con el formato: Hitos de hoy, Pendientes de mañana y Bloqueos."
+      ]}
+  ]
+};
+
+function App() {
+  const [pantalla, setPantalla] = React.useState("nombre");
+  const [current, setCurrent] = React.useState(0);
+  const [respuestas, setRespuestas] = React.useState({});
+  const [selected, setSelected] = React.useState(null);
+  
+  const [nombre, setNombre] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [telefono, setTelefono] = React.useState("");
+  
+  const [isPremiumUnlocked, setIsPremiumUnlocked] = React.useState(false);
+  const [inputCode, setInputCode] = React.useState("");
+  const [codeError, setCodeError] = React.useState("");
+
+  const [perfil, setPerfil] = React.useState(null);
+  const [plan, setPlan] = React.useState(null);
+
+  const c = perfil ? COLORS[perfil] : COLORS.analitico;
+
+  const handleNext = () => {
+    if (!selected) return;
+    const newResp = { ...respuestas, [QUESTIONS[current].id]: selected };
+    setRespuestas(newResp);
+    setSelected(null);
+    
+    if (current < QUESTIONS.length - 1) { 
+      setCurrent(current + 1); 
+    } else {
+      setPantalla("captura");
+    }
+  };
+
+  const handleSubmitLead = async (e) => {
+    e.preventDefault();
+    if (!nombre || !email || !telefono) {
+      alert("Por favor, completá todos los campos.");
+      return;
+    }
+
+    const formAction = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeu3k2r7O6w6yC6fV9M0hVn8-Z4Y_VqD_V7y2uXv9-kF9z3wA/formResponse";
+    const idNombre = "entry.364372982";
+    const idEmail = "entry.821946351";
+    const idTelefono = "entry.142958374";
+
+    const formData = new FormData();
+    formData.append(idNombre, nombre);
+    formData.append(idEmail, email);
+    formData.append(idTelefono, telefono);
+
+    try {
+      await fetch(formAction, {
+        method: "POST",
+        body: formData,
+        mode: "no-cors"
+      });
+      console.log("Contacto guardado en Google Sheets con éxito.");
+    } catch (error) {
+      console.error("Error al guardar datos:", error);
+    }
+
+    const p = calcularPerfil(respuestas);
+    setPerfil(p);
+    setPlan(PLANS[p]);
+    setPantalla('resultado');
+  };
+
+  const procesarCodigoPremium = () => {
+    if (inputCode.trim().toUpperCase() === ACCESS_CODE) {
+      setIsPremiumUnlocked(true);
+      setCodeError("");
+    } else {
+      setCodeError("Código incorrecto. Verificá tu comprobante.");
+    }
+  };
+
+  const reiniciarTest = () => {
+    setPantalla("nombre");
+    setCurrent(0);
+    setRespuestas({});
+    setPerfil(null);
+    setPlan(null);
+    setNombre("");
+    setEmail("");
+    setTelefono("");
+    setInputCode("");
+    setIsPremiumUnlocked(false);
+  };
+
+  const progress = Math.round(((current + 1) / QUESTIONS.length) * 100);
+  const w = { maxWidth: 640, margin: "0 auto", padding: "2.5rem 1.25rem" };
+  const card = { background: "#fff", border: "1px solid #e5e5e0", borderRadius: 12, padding: "1.75rem 2rem", marginBottom: "1.25rem" };
+  const lbl = { fontSize: 11, color: "#737373", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10, display: "block", fontWeight: 600 };
+  const btnD = (bg) => ({ background: bg || "#262626", border: "none", borderRadius: 8, padding: "14px 28px", fontSize: 15, fontWeight: 500, color: "#fff", width: "100%" });
+  const btnO = { background: "transparent", border: "1px solid #d4d4d4", borderRadius: 8, padding: "12px 28px", fontSize: 14, color: "#404040", width: "100%", marginTop: 15, fontWeight: 500 };
+
+  if (pantalla === "nombre") return (
+    <div style={{ ...w, minHeight: "90vh", display: "flex", alignItems: "center" }}>
+      <div style={{ width: "100%" }}>
+        <div style={{ background: "#262626", borderRadius: 12, padding: "2.5rem 2rem", marginBottom: "1.25rem", textAlign: "center" }}>
+          <i className="ti ti-sparkles" style={{ fontSize: 36, color: "#dfcfc4", display: "block", marginBottom: 14 }} />
+          <h1 style={{ fontSize: 25, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10, letterSpacing: "-0.01em" }}>Activador de Capital Humano</h1>
+          <p style={{ fontSize: 15, color: "#d6d3d1", lineHeight: 1.6 }}>Descubrí qué propuesta digital se alinea de forma orgánica con tu estructura de talentos.</p>
+        </div>
+        <div style={card}>
+          <label style={lbl}>¿Cómo te llamás para iniciar?</label>
+          <input type="text" placeholder="Tu nombre" value={nombre} onChange={e => setNombre(e.target.value)} onKeyDown={e => e.key === "Enter" && nombre && setPantalla("scanner")} />
+          <button style={{ ...btnD(), marginTop: 10, opacity: nombre ? 1 : 0.4 }} disabled={!nombre} onClick={() => setPantalla("scanner")}>Empezar el escáner gratis →</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (pantalla === "scanner") {
+    const q = QUESTIONS[current];
+    return (
+      <div style={w}>
+        <div style={{ height: 6, background: "#e5e5e0", borderRadius: 3, marginBottom: "2rem", overflow: "hidden" }}>
+          <div style={{ height: 6, width: `${progress}%`, background: "#404040", borderRadius: 3, transition: "width 0.4s" }} />
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+          <span style={{ ...lbl, margin: 0 }}>Mapeo de Potencial</span>
+          <span style={{ fontSize: 13, color: "#737373", fontWeight: 500 }}>Pregunta {current + 1} de {QUESTIONS.length}</span>
+        </div>
+        <h2 style={{ fontSize: 20, fontWeight: 500, marginBottom: "1.75rem", lineHeight: 1.4 }}>{q.text}</h2>
+        
+        {q.options.map(opt => {
+          const isSelected = selected === opt.value;
+          const optColor = COLORS[opt.value] || { bg: "#f5f5f4", border: "#d6d3d1", text: "#1c1917" };
+          return (
+            <button key={opt.value} onClick={() => setSelected(opt.value)} 
+              style={{ 
+                display: "block", width: "100%", textAlign: "left", 
+                background: isSelected ? optColor.bg : "#fff", 
+                border: isSelected ? `2px solid ${optColor.border}` : "1px solid #e5e5e0", 
+                borderRadius: 10, padding: "16px 20px", fontSize: 15, 
+                color: isSelected ? optColor.text : "#404040", marginBottom: 12, lineHeight: 1.5
+              }}>
+              {opt.label}
+            </button>
+          );
+        })}
+        
+        <button style={{ ...btnD(), marginTop: 12, opacity: selected ? 1 : 0.4 }} disabled={!selected} onClick={handleNext}>
+          {current < QUESTIONS.length - 1 ? "Siguiente →" : "Finalizar cuestionario →"}
+        </button>
+      </div>
+    );
+  }
+
+  if (pantalla === "captura") return (
+    <div style={{ ...w, minHeight: "90vh", display: "flex", alignItems: "center" }}>
+      <div style={{ width: "100%" }}>
+        <div style={{ background: "#262626", borderRadius: 12, padding: "2.5rem 2rem", marginBottom: "1.25rem", textAlign: "center" }}>
+          <i className="ti ti-mail-opened" style={{ fontSize: 36, color: "#dfcfc4", display: "block", marginBottom: 14 }} />
+          <h1 style={{ fontSize: 23, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10 }}>¡Análisis Completo!</h1>
+          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6 }}>Ingresá tus datos para procesar tu diagnóstico y sincronizar tu perfil de inmediato.</p>
+        </div>
+        <form onSubmit={handleSubmitLead} style={card}>
+          <label style={lbl}>Correo Electrónico</label>
+          <input type="email" placeholder="ejemplo@correo.com" required value={email} onChange={e => setEmail(e.target.value)} />
+          
+          <label style={{...lbl, marginTop: 10}}>Teléfono de Contacto (WhatsApp)</label>
+          <input type="tel" placeholder="Ej: +54 9 11 1234 5678" required value={telefono} onChange={e => setTelefono(e.target.value)} />
+          
+          <button type="submit" style={{ ...btnD(), marginTop: 15 }}>Generar mi Diagnóstico Gratis →</button>
+        </form>
+      </div>
+    </div>
+  );
+
+  if (pantalla === "resultado" && plan) return (
+    <div style={w}>
+      <div style={{ background: c.bg, borderRadius: 12, padding: "2rem", marginBottom: "1.25rem", border: `1px solid ${c.border}`, textAlign: 'left' }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: c.badge, borderRadius: 6, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: c.text, marginBottom: 14, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+          <i className={`ti ${plan.icon}`} style={{ fontSize: 14 }} /> {plan.perfil}
+        </span>
+        <h1 style={{ fontSize: 24, fontWeight: 500, color: c.text, marginTop: 0, marginBottom: 10, letterSpacing: "-0.02em" }}>{plan.titulo}</h1>
+        <p style={{ fontSize: 15, lineHeight: 1.6, color: c.accent, marginBottom: 0 }}>Hola <strong>{nombre}</strong>, este es el perfil que domina tu estructura de talentos de forma natural. Tu servicio ideal para monetizar de forma online es: <strong>{plan.servicio}</strong>.</p>
+      </div>
+
+      {!isPremiumUnlocked && (
+        <div style={{ background: "#262626", borderRadius: 12, padding: "2.25rem 2rem", marginBottom: "1.25rem", color: "#fafaf9" }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
+            <i className="ti ti-lock" style={{ fontSize: 22, color: "#dfcfc4" }} />
+            <h3 style={{ fontSize: 18, fontWeight: 500, margin: 0 }}>Desbloqueá tu Plan de Negocios Técnico</h3>
+          </div>
+          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6, marginBottom: 20 }}>
+            Accedé al panel operativo completo con el paso a paso detallado de los clics, las fórmulas exactas de Excel, las configuraciones de apps y plantillas reales para copiar y pegar.
+          </p>
+          
+          <div style={{ background: "rgba(255,255,255,0.05)", padding: "1.25rem", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)" }}>
+            <label style={{ ...lbl, color: "#a3a3a3" }}>¿Ya tenés tu código de acceso?</label>
+            <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+              <input type="text" placeholder="Ingresá tu código aquí" value={inputCode} onChange={e => setInputCode(e.target.value)} onKeyDown={e => e.key === "Enter" && procesarCodigoPremium()} style={{ background: "#fff", color: "#262626" }} />
+              <button onClick={procesarCodigoPremium} style={{ background: "#dfcfc4", color: "#262626", border: "none", borderRadius: 8, padding: "0 20px", fontWeight: 600, fontSize: 14 }}>Activar</button>
+            </div>
+            {codeError && <p style={{ fontSize: 12, color: "#f87171", marginTop: 8, margin: 0 }}>{codeError}</p>}
+          </div>
+          
+          <div style={{ textAlign: "center", marginTop: 20 }}>
+            <a href="https://mpago.la/2GtfXSt" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "transparent", border: "1px solid #dfcfc4", color: "#dfcfc4", borderRadius: 8, padding: "12px", fontSize: 14, fontWeight: 600 }}>
+              Adquirir Plan Premium Completo por USD 25 →
+            </a>
+          </div>
+        </div>
+      )}
+
+      <div className={!isPremiumUnlocked ? "premium-blur" : ""}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, textAlign: 'left', marginBottom: 14, color: '#1a1a1a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          <i className="ti ti-checklist" style={{ marginRight: 6 }} /> Guía de Implementación Operativa (15 Días)
+        </h3>
+        
+        {DETALLES_OPERATIVOS[perfil]?.map((faseData, index) => (
+          <div key={index} className="fase-box">
+            <h4>
+              <i className="ti ti-arrow-right" style={{ color: c.accent }} />
+              {faseData.fase}
+            </h4>
+            <ul className="fase-list">
+              {faseData.items.map((item, i) => (
+                <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <button style={btnO} onClick={reiniciarTest}>Volver a empezar</button>
+    </div>
+  );
+
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
