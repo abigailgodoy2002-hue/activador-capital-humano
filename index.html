@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plan Premium — Activador de Capital Humano</title>
+  <title>Activador de Capital Humano — Test de Potencial</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -30,6 +30,39 @@ const COLORS = {
   comunicador: { bg: "#fafaf9", border: "#d6d3d1", text: "#292524", accent: "#57534e", badge: "#e7e5e4" }, 
   organizador: { bg: "#f5f5f4", border: "#e7e5e4", text: "#1c1917", accent: "#44403c", badge: "#d6d3d1" }, 
 };
+
+const QUESTIONS = [
+  { id: "q1", text: "Cuando alguien tiene un problem, ¿qué hacés primero?", options: [
+    { label: "Escucho y trato de entender cómo se siente", value: "empatia" },
+    { label: "Analizo los datos y busco la causa raíz", value: "analitico" },
+    { label: "Empiezo a hablar y buscar soluciones juntos", value: "comunicador" },
+    { label: "Organizo la información para que sea más claro", value: "organizador" },
+  ]},
+  { id: "q2", text: "¿Con qué actividad te sentirías más cómodo/a trabajando?", options: [
+    { label: "Acompañar a alguien en un proceso difícil", value: "empatia" },
+    { label: "Controlar números o procesos operativos", value: "analitico" },
+    { label: "Crear contenido o presentar ideas en redes", value: "comunicador" },
+    { label: "Coordinar tareas, agendas y proyectos", value: "organizador" },
+  ]},
+  { id: "q3", text: "¿Qué te dicen que hacés muy bien?", options: [
+    { label: "Que soy comprensivo/a y la gente confía en mí", value: "empatia" },
+    { label: "Que soy muy ordenado/a y detallista", value: "analitico" },
+    { label: "Que tengo facilidad para hablar y convencer", value: "comunicador" },
+    { label: "Que siempre tengo todo bajo control y en tiempo", value: "organizador" },
+  ]},
+  { id: "q4", text: "Si tuvieras que generar ingresos mañana, ¿qué elegiría tu instinto?", options: [
+    { label: "Ayudar a alguien directamente con mi tiempo", value: "empatia" },
+    { label: "Ofrecer control y orden a un negocio que lo necesita", value: "analitico" },
+    { label: "Crear contenido y conectar marcas con personas", value: "comunicador" },
+    { label: "Gestionar proyectos o equipos de manera remota", value: "organizador" },
+  ]},
+  { id: "q5", text: "¿Qué herramienta usás (o usarías) con más naturalidad?", options: [
+    { label: "WhatsApp para comunicarme y dar soporte", value: "empatia" },
+    { label: "Excel o planillas para llevar registros", value: "analitico" },
+    { label: "El celular para grabar y editar videos", value: "comunicador" },
+    { label: "Notion, Trello o Google Calendar para organizar", value: "organizador" },
+  ]},
+];
 
 const PLANS = {
   empatia:     { perfil: "Gestión de WhatsApp", titulo: "Tu capital es la conexión humana", servicio: "Gestor/a de Atención al Cliente vía WhatsApp", icon: "ti-message-circle" },
@@ -63,7 +96,7 @@ const PLANES_PREMIUM = {
   comunicador: {
     propuesta: "«Soy Creadora de Contenido UGC. Creo videos auténticos y persuasivos que muestran tu producto de forma real, generando la confianza que convierte seguidores en compradores.»",
     pasos: [
-      { numero: 1, titulo: "Dominá la fórmula de guion UGC", detalle: "Gancho (0-3 seg), planteo del dilema cotidian, introducción orgánica del producto y llamado a la acción.", herramientas: [{ nombre: "Notion", link: "https://notion.so", desc: "Organizador de guiones" }], tiempo: "2 horas" },
+      { numero: 1, titulo: "Dominá la fórmula de guion UGC", detalle: "Gancho (0-3 seg), planteo del dilema cotidiano, introducción orgánica del producto y llamado a la acción.", herramientas: [{ nombre: "Notion", link: "https://notion.so", desc: "Organizador de guiones" }], tiempo: "2 horas" },
       { numero: 2, titulo: "Grabá tu portafolio de 3 videos", detalle: "Elegí elementos en tu casa y produciles piezas dinámicas con subtítulos de lectura veloz usando CapCut.", herramientas: [{ nombre: "CapCut", link: "https://capcut.com", desc: "Editor de video gratuito" }], tiempo: "4 horas" }
     ],
     mensajes: [{ titulo: "DM a marca en Instagram", texto: "Hola [Marca]! Soy creadora UGC especializada en videos de conversión. Me encanta lo que hacen y preparé una propuesta visual: [link]..." }],
@@ -71,7 +104,7 @@ const PLANES_PREMIUM = {
     frase: "Tu voz vale dinero. Las marcas lo saben — solo están esperando que vos se los digas."
   },
   organizador: {
-    propuesta: "«Soy Asistente Virtual y Coordinadora de Proyectos. Me encargo de que nada se pierda y todo avance según lo planeado para que te enfoques en expandir tu negocio.»",
+    propuesta: "«Soy Asistente Virtual y Coordinadora de Proyectos. Me encargo de que nada se pierda y todo avance según lo planeado para que te enfocques en expandir tu negocio.»",
     pasos: [
       { numero: 1, titulo: "Elegí y dominá tu herramienta principal", detalle: "Especializate en Notion o Trello. Creá tableros Kanban adaptados a la rutina de coaches o consultores.", herramientas: [{ nombre: "Notion", link: "https://notion.so", desc: "Ecosistema de trabajo" }], tiempo: "2 días" },
       { numero: 2, titulo: "Armá tu sistema demo y grabá un recorrido", detalle: "Estructurá un CRM básico y gestión de contenidos. Grabá la pantalla mostrando cómo soluciona el caos administrativo.", herramientas: [{ nombre: "Loom", link: "https://loom.com", desc: "Grabación de videos cortos" }], tiempo: "3 horas" }
@@ -82,22 +115,240 @@ const PLANES_PREMIUM = {
   }
 };
 
+function calcularPerfil(r) {
+  const c = { empatia: 0, analitico: 0, comunicador: 0, organizador: 0 };
+  ["q1","q2","q3","q4","q5"].forEach(k => { if (r[k] && c[r[k]] !== undefined) c[r[k]]++; });
+  return Object.entries(c).sort((a, b) => b[1] - a[1])[0][0];
+}
+
 function App() {
-  const [nombre] = React.useState(() => localStorage.getItem("ach_nombre") || "Postulante");
-  const [perfil] = React.useState(() => localStorage.getItem("ach_perfil") || "analitico");
+  const [step, setStep] = React.useState(() => localStorage.getItem("ach_step") || "nombre");
+  const [current, setCurrent] = React.useState(() => parseInt(localStorage.getItem("ach_current")) || 0);
+  const [respuestas, setRespuestas] = React.useState(() => JSON.parse(localStorage.getItem("ach_respuestas")) || {});
+  const [selected, setSelected] = React.useState(null);
+  const [nombre, setNombre] = React.useState(() => localStorage.getItem("ach_nombre") || "");
   
   const [isPremiumUnlocked, setIsPremiumUnlocked] = React.useState(() => localStorage.getItem("ach_premium") === "true");
   const [inputCode, setInputCode] = React.useState("");
   const [codeError, setCodeError] = React.useState("");
 
-  const plan = PLANS[perfil];
-  const planPremium = PLANES_PREMIUM[perfil];
-  const c = COLORS[perfil];
+  const [perfil, setPerfil] = React.useState(() => localStorage.getItem("ach_perfil") || null);
+  const [plan, setPlan] = React.useState(() => perfil ? PLANS[perfil] : null);
+  const [planPremium, setPlanPremium] = React.useState(() => perfil ? PLANES_PREMIUM[perfil] : null);
 
   React.useEffect(() => {
+    localStorage.setItem("ach_step", step);
+    localStorage.setItem("ach_current", current);
+    localStorage.setItem("ach_respuestas", JSON.stringify(respuestas));
+    localStorage.setItem("ach_nombre", nombre);
     localStorage.setItem("ach_premium", isPremiumUnlocked);
-  }, [isPremiumUnlocked]);
+    if (perfil) localStorage.setItem("ach_perfil", perfil);
+  }, [step, current, respuestas, nombre, perfil, isPremiumUnlocked]);
+
+  const c = perfil ? COLORS[perfil] : COLORS.analitico;
+
+  const handleNext = () => {
+    if (!selected) return;
+    const newResp = { ...respuestas, [QUESTIONS[current].id]: selected };
+    setRespuestas(newResp);
+    setSelected(null);
+    
+    if (current < QUESTIONS.length - 1) { 
+      setCurrent(current + 1); 
+    } else {
+      const p = calcularPerfil(newResp);
+      setPerfil(p);
+      setPlan(PLANS[p]);
+      setPlanPremium(PLANES_PREMIUM[p]);
+      setStep("resultado");
+    }
+  };
 
   const procesarCodigoPremium = () => {
     if (inputCode.trim().toUpperCase() === ACCESS_CODE) {
-      setIsPremiumUnlocked(true); 
+      setIsPremiumUnlocked(true);
+      setCodeError("");
+    } else {
+      setCodeError("Código incorrecto. Verificá tu comprobante o clave.");
+    }
+  };
+
+  const reiniciarTest = () => {
+    localStorage.clear();
+    setStep("nombre");
+    setCurrent(0);
+    setRespuestas({});
+    setPerfil(null);
+    setPlan(null);
+    setPlanPremium(null);
+    setNombre("");
+    setInputCode("");
+    setIsPremiumUnlocked(false);
+  };
+
+  const progress = Math.round(((current + 1) / QUESTIONS.length) * 100);
+  const w = { maxWidth: 640, margin: "0 auto", padding: "2.5rem 1.25rem" };
+  const card = { background: "#fff", border: "1px solid #e5e5e0", borderRadius: 12, padding: "1.75rem 2rem", marginBottom: "1.25rem" };
+  const lbl = { fontSize: 11, color: "#737373", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10, display: "block", fontWeight: 600 };
+  const btnD = (bg) => ({ background: bg || "#262626", border: "none", borderRadius: 8, padding: "14px 28px", fontSize: 15, fontWeight: 500, color: "#fff", width: "100%" });
+  const btnO = { background: "transparent", border: "1px solid #d4d4d4", borderRadius: 8, padding: "12px 28px", fontSize: 14, color: "#404040", width: "100%", marginTop: 15, fontWeight: 500 };
+
+  if (step === "nombre") return (
+    <div style={{ ...w, minHeight: "90vh", display: "flex", alignItems: "center" }}>
+      <div style={{ width: "100%" }}>
+        <div style={{ background: "#262626", borderRadius: 12, padding: "2.5rem 2rem", marginBottom: "1.25rem", textAlign: "center" }}>
+          <i className="ti ti-sparkles" style={{ fontSize: 36, color: "#dfcfc4", display: "block", marginBottom: 14 }} />
+          <h1 style={{ fontSize: 25, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10, letterSpacing: "-0.01em" }}>Activador de Capital Humano</h1>
+          <p style={{ fontSize: 15, color: "#d6d3d1", lineHeight: 1.6 }}>Descubrí qué servicio digital se alinea de forma natural con tu potencial e instinto.</p>
+        </div>
+        <div style={card}>
+          <label style={lbl}>¿Cómo te llamás para iniciar tu diagnóstico?</label>
+          <input type="text" placeholder="Tu nombre" value={nombre} onChange={e => setNombre(e.target.value)} onKeyDown={e => e.key === "Enter" && nombre && setStep("scanner")} />
+          <button style={{ ...btnD(), marginTop: 20, opacity: nombre ? 1 : 0.4 }} disabled={!nombre} onClick={() => setStep("scanner")}>Empezar el escáner gratis →</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (step === "scanner") {
+    const q = QUESTIONS[current];
+    return (
+      <div style={w}>
+        <div style={{ height: 6, background: "#e5e5e0", borderRadius: 3, marginBottom: "2rem", overflow: "hidden" }}>
+          <div style={{ height: 6, width: `${progress}%`, background: "#404040", borderRadius: 3, transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+          <span style={{ ...lbl, margin: 0 }}>Evaluación de Perfil</span>
+          <span style={{ fontSize: 13, color: "#737373", fontWeight: 500 }}>Pregunta {current + 1} de {QUESTIONS.length}</span>
+        </div>
+        <h2 style={{ fontSize: 20, fontWeight: 500, marginBottom: "1.75rem", lineHeight: 1.4 }}>{q.text}</h2>
+        
+        {q.options.map(opt => {
+          const isSelected = selected === opt.value;
+          const optColor = COLORS[opt.value] || { bg: "#f5f5f4", border: "#d6d3d1", text: "#1c1917" };
+          return (
+            <button key={opt.value} onClick={() => setSelected(opt.value)} 
+              style={{ 
+                display: "block", width: "100%", textAlign: "left", 
+                background: isSelected ? optColor.bg : "#fff", 
+                border: isSelected ? `2px solid ${optColor.border}` : "1px solid #e5e5e0", 
+                borderRadius: 10, padding: "16px 20px", fontSize: 15, 
+                color: isSelected ? optColor.text : "#404040", marginBottom: 12, lineHeight: 1.5
+              }}>
+              {opt.label}
+            </button>
+          );
+        })}
+        
+        <button style={{ ...btnD(), marginTop: 12, opacity: selected ? 1 : 0.4 }} disabled={!selected} onClick={handleNext}>
+          {current < QUESTIONS.length - 1 ? "Siguiente →" : "Ver mi diagnóstico gratis →"}
+        </button>
+      </div>
+    );
+  }
+
+  if (step === "resultado" && plan && planPremium) return (
+    <div style={w}>
+      <div style={{ background: c.bg, borderRadius: 12, padding: "2rem", marginBottom: "1.25rem", border: `1px solid ${c.border}` }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: c.badge, borderRadius: 6, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: c.text, marginBottom: 14, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+          <i className={`ti ${plan.icon}`} style={{ fontSize: 14 }} /> {plan.perfil}
+        </span>
+        <h1 style={{ fontSize: 24, fontWeight: 500, color: c.text, marginTop: 0, marginBottom: 10, letterSpacing: "-0.02em" }}>{plan.titulo}</h1>
+        <p style={{ fontSize: 15, lineHeight: 1.6, color: c.accent, marginBottom: 16 }}>Hola {nombre}, este es el perfil que domina tu estructura de talentos de forma natural. Tu servicio ideal para monetizar es: <strong>{plan.servicio}</strong>.</p>
+        <div style={{ background: "#ffffff", borderRadius: 10, padding: "16px 20px", fontSize: 14, fontStyle: "italic", color: c.text, lineHeight: 1.7, border: `1px solid ${c.border}` }}>{planPremium.propuesta}</div>
+      </div>
+
+      {!isPremiumUnlocked && (
+        <div style={{ background: "#262626", borderRadius: 12, padding: "2.25rem 2rem", marginBottom: "1.25rem", color: "#fafaf9" }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
+            <i className="ti ti-lock" style={{ fontSize: 22, color: "#dfcfc4" }} />
+            <h3 style={{ fontSize: 18, fontWeight: 500, margin: 0 }}>Desbloqueá tu Plan de Negocios Premium</h3>
+          </div>
+          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6, marginBottom: 20 }}>
+            Accedé a la hoja de ruta paso a paso de 15 días con las herramientas necesarias, plantillas exactas de mensajes de venta para enviar a clientes y la estrategia para definir tus tarifas.
+          </p>
+          
+          <div style={{ background: "rgba(255,255,255,0.05)", padding: "1.25rem", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)" }}>
+            <label style={{ ...lbl, color: "#a3a3a3" }}>¿Ya tenés tu código de acceso?</label>
+            <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+              <input type="text" placeholder="Ingresá tu código aquí" value={inputCode} onChange={e => setInputCode(e.target.value)} onKeyDown={e => e.key === "Enter" && procesarCodigoPremium()} style={{ background: "#fff", color: "#262626" }} />
+              <button onClick={procesarCodigoPremium} style={{ background: "#dfcfc4", color: "#262626", border: "none", borderRadius: 8, padding: "0 20px", fontWeight: 600, fontSize: 14 }}>Activar</button>
+            </div>
+            {codeError && <p style={{ fontSize: 12, color: "#f87171", marginTop: 8, margin: 0 }}>{codeError}</p>}
+          </div>
+          
+          <div style={{ textAlign: "center", marginTop: 20 }}>
+            <a href="https://mpago.la/2GtfXSt" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "transparent", border: "1px solid #dfcfc4", color: "#dfcfc4", borderRadius: 8, padding: "12px", fontSize: 14, fontWeight: 600 }}>
+              Adquirir Plan Premium Completo por USD 25 →
+            </a>
+          </div>
+        </div>
+      )}
+
+      <div className={!isPremiumUnlocked ? "premium-blur" : ""}>
+        <div style={card}>
+          <span style={lbl}>Tu plan paso a paso — con herramientas y tiempos exactos</span>
+          {planPremium.pasos.map((p, i) => (
+            <div key={p.numero} style={{ borderTop: i > 0 ? "1px solid #f5f5f4" : "none", paddingTop: i > 0 ? 24 : 8, marginTop: i > 0 ? 24 : 0 }}>
+              <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 12 }}>
+                <div style={{ minWidth: 28, height: 28, borderRadius: "50%", background: c.badge, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: c.text, flexShrink: 0 }}>{p.numero}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", width: "100%", justifyContent: "space-between" }}>
+                  <p style={{ fontSize: 15, fontWeight: 600, margin: 0, color: "#1c1917" }}>{p.titulo}</p>
+                  <span style={{ fontSize: 11, color: c.accent, background: c.bg, borderRadius: 4, padding: "3px 8px", fontWeight: 500, border: `1px solid ${c.border}` }}>⏱ {p.tiempo}</span>
+                </div>
+              </div>
+              <p style={{ fontSize: 14, lineHeight: 1.7, color: "#525252", marginBottom: 14, paddingLeft: 42 }}>{p.detalle}</p>
+              
+              {p.herramientas && p.herramientas.length > 0 && (
+                <div style={{ paddingLeft: 42 }}>
+                  {p.herramientas.map(h => (
+                    <a key={h.nombre} href={isPremiumUnlocked ? h.link : "#"} target={isPremiumUnlocked ? "_blank" : "_self"} rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 10, background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 8, padding: "10px 14px", marginBottom: 8 }}>
+                      <i className="ti ti-external-link" style={{ fontSize: 14, color: "#737373", flexShrink: 0 }} />
+                      <div>
+                        <p style={{ fontSize: 13, fontWeight: 500, color: "#262626", margin: 0 }}>{h.nombre}</p>
+                        <p style={{ fontSize: 12, color: "#737373", margin: 0, marginTop: 2 }}>{h.desc}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ background: "#ffffff", border: `1px solid ${c.border}`, borderRadius: 12, padding: "1.75rem 2rem", marginBottom: "1.25rem" }}>
+          <span style={{ ...lbl, color: c.text }}>Guiones de Comunicación Inmediata</span>
+          {planPremium.mensajes.map((m, i) => (
+            <div key={i} style={{ marginTop: 20, borderTop: i > 0 ? "1px solid #f5f5f4" : "none", paddingTop: i > 0 ? 20 : 0 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: c.accent, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>{m.titulo}</p>
+              <div style={{ background: c.bg, borderRadius: 8, padding: "14px 16px", fontSize: 13.5, lineHeight: 1.7, color: c.text, whiteSpace: "pre-wrap", border: `1px solid ${c.border}` }}>{m.texto}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={card}>
+          <span style={lbl}>{planPremium.precios.titulo}</span>
+          {planPremium.precios.items.map((item, i) => (
+            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginTop: 12 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: c.border, flexShrink: 0, marginTop: 7 }} />
+              <p style={{ fontSize: 14, lineHeight: 1.6, color: "#404040", margin: 0 }}>{item}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ background: "#262626", borderRadius: 12, padding: "1.75rem", marginBottom: "1.25rem", textAlign: "center" }}>
+          <p style={{ fontSize: 15, fontWeight: 400, color: "#f5f5f4", lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>"{planPremium.frase}"</p>
+        </div>
+      </div>
+
+      <button style={btnO} onClick={reiniciarTest}>Volver a empezar</button>
+    </div>
+  );
+
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
