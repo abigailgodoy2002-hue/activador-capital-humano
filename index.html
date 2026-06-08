@@ -13,7 +13,7 @@
     body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f8f6; color: #262626; min-height: 100vh; -webkit-font-smoothing: antialiased; }
     input { font-family: inherit; font-size: 15px; padding: 12px 16px; border: 1px solid #e5e5e0; border-radius: 8px; width: 100%; outline: none; background: #fff; color: #262626; transition: border-color 0.2s; margin-bottom: 12px; }
     input:focus { border-color: #737373; }
-    button { font-family: inherit; cursor: pointer; transition: all 0.2s ease; }
+    button { font-family: inherit; cursor: pointer; transition: all 0.2s ease; border: none; }
     a { color: inherit; text-decoration: none; }
     .premium-blur { filter: blur(5px); opacity: 0.3; pointer-events: none; user-select: none; }
   </style>
@@ -24,7 +24,6 @@
 
 const ACCESS_CODE = "AMAN2026";
 
-// Agregado el perfil "bienestar" con una estética nude/oliva sofisticada
 const COLORS = {
   empatia:     { bg: "#fcf8f5", border: "#dfcfc4", text: "#4a3b32", accent: "#705c51", badge: "#eedfd5" }, 
   analitico:   { bg: "#f4f5f6", border: "#cbd5e1", text: "#1e293b", accent: "#475569", badge: "#e2e8f0" }, 
@@ -33,7 +32,6 @@ const COLORS = {
   bienestar:   { bg: "#f6f7f5", border: "#ccd1c7", text: "#353d2f", accent: "#535e4b", badge: "#e2e6df" }, 
 };
 
-// Test expandido a 8 preguntas incluyendo las específicas para el perfil Bienestar/Holístico
 const QUESTIONS = [
   { id: "q1", text: "Cuando alguien tiene un problema, ¿qué hacés primero?", options: [
     { label: "Escucho y trato de entender cómo se siente", value: "empatia" },
@@ -70,7 +68,6 @@ const QUESTIONS = [
     { label: "Notion, Trello o Google Calendar para organizar", value: "organizador" },
     { label: "Espacios de meditación, recetas sanas o rutinas de cuidado", value: "bienestar" }
   ]},
-  // 3 Nuevas preguntas agregadas para dar más profundidad y captar el perfil holístico
   { id: "q6", text: "¿En qué tipo de ambiente preferís pasar tus mañanas productivas?", options: [
     { label: "En contacto constante respondiendo dudas y guiando personas", value: "empatia" },
     { label: "En silencio, analizando métricas, reportes o estructuras", value: "analitico" },
@@ -140,13 +137,12 @@ const PLANES_PREMIUM = {
     precios: { titulo: "Estrategia de Cobro", items: ["Paquetes mensuales basados en horas semanales"] },
     frase: "El caos que vos ves como obvio de resolver, para tu cliente es una carga diaria que lo agota."
   },
-  // Contenido Premium para el nuevo perfil de Bienestar y Vida Consciente
   bienestar: {
     propuesta: "«Soy Consultora de Bienestar y Estilo de Vida. Ayudo a profesionales desbordados y marcas del nicho holístico a estructurar programas de hábitos saludables, alimentación limpia, rutinas de balance corporal y gestión del estrés.»",
     pasos: [
       { numero: 1, titulo: "Estructurá tu catálogo de 3 Rutinas Base", detalle: "Diseñá en Canva tres guías premium en PDF listas para adaptar a clientes: (1) Transición a alimentación limpia/consciente, (2) Rituales de mañana para reducción del estrés corporal, (3) Plan de organización y detox del hogar. Este catálogo estético es tu pilar comercial.", herramientas: [{ nombre: "Canva — Diseños Minimalistas", link: "https://canva.com", desc: "Para armar tus guías estéticas de hábitos" }], tiempo: "4 horas" },
       { numero: 2, titulo: "Aliate con marcas, estéticas o centros holísticos locales", detalle: "Presentate en centros de yoga, tiendas saludables o estéticas de tu zona. Ofreceles un taller corto de 30 minutos o empaquetar tus guías como un beneficio exclusivo para sus clientes recurrentes. Las alianzas físicas aceleran la confianza.", herramientas: [], tiempo: "3 horas" },
-      { numero: 3, titulo: "Ofrecé una 'Sesión de Diagnóstico de Rutinas' de 20 minutos", detalle: "Contactá personas en transición o emprendedores cansados. Revisá gratis sus tres principales fugas de bienestar: calidad del sueño, organización de comidas y niveles de ansiedad diaria. Cerrá ofreciendo tu acompañamiento de 15 días.", herramientas: [{ nombre: "Instagram — Búsqueda de Nicho", link: "https://instagram.com", desc: "Conectá con perfiles alineados a la vida sana" }], tiempo: "1 hora diaria" }
+      { numero: 3, titulo: "Ofrecé una 'Sesión de Diagnóstico de Rutinas' de 20 minutos", detalle: "Contactá personas en transición o emprendedores cansados. Revisá gratis sus tres principales fugas de bienestar: calidad del sueño, organization de comidas y niveles de ansiedad diaria. Cerrá ofreciendo tu acompañamiento de 15 días.", herramientas: [{ nombre: "Instagram — Búsqueda de Nicho", link: "https://instagram.com", desc: "Conectá con perfiles alineados a la vida sana" }], tiempo: "1 hora diaria" }
     ],
     mensajes: [
       { titulo: "Mensaje a cliente potencial desbordado", texto: "Hola [Nombre]! Noto que llevás un ritmo de trabajo súper intenso. Me especializo en diseño de rutinas de bienestar corporal y alimentación consciente para profesionales desbordados. Te propongo una sesión de diagnóstico de hábitos de 20 minutos sin cargo para armar tu plan de balance diario. ¿Te gustaría coordinar?" },
@@ -176,7 +172,6 @@ function App() {
   const [respuestas, setRespuestas] = React.useState(() => JSON.parse(localStorage.getItem("ach_respuestas")) || {});
   const [selected, setSelected] = React.useState(null);
   
-  // Datos del Lead a recolectar
   const [nombre, setNombre] = React.useState(() => localStorage.getItem("ach_nombre") || "");
   const [email, setEmail] = React.useState(() => localStorage.getItem("ach_email") || "");
   const [telefono, setTelefono] = React.useState(() => localStorage.getItem("ach_telefono") || "");
@@ -211,17 +206,31 @@ function App() {
     if (current < QUESTIONS.length - 1) { 
       setCurrent(current + 1); 
     } else {
-      // Al terminar las 8 preguntas, lo mandamos a la pantalla de captura de leads antes del resultado
       setStep("captura");
     }
   };
 
-  const enviarDatosYProcesar = (e) => {
+  const enviarDatosYProcesar = async (e) => {
     e.preventDefault();
     if (!nombre || !email || !telefono) return;
 
-    // MAGIA: Aquí se puede enganchar con un Google Sheet o servicio de mail a futuro
-    console.log("Lead Capturado con éxito:", { nombre, email, telefono });
+    // CONEXIÓN MAESTRA CON TU GOOGLE FORMS:
+    const formAction = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeu3k2r7O6w6yC6fV9M0hVn8-Z4Y_VqD_V7y2uXv9-kF9z3wA/formResponse";
+    const formData = new FormData();
+    formData.append("entry.364372982", nombre);
+    formData.append("entry.821946351", email);
+    formData.append("entry.142958374", telefono);
+
+    try {
+      await fetch(formAction, {
+        method: "POST",
+        body: formData,
+        mode: "no-cors"
+      });
+      console.log("Lead guardado con éxito.");
+    } catch (error) {
+      console.error("Error al enviar los datos:", error);
+    }
 
     const p = calcularPerfil(respuestas);
     setPerfil(p);
@@ -338,7 +347,6 @@ function App() {
 
   if (step === "resultado" && plan && planPremium) return (
     <div style={w}>
-      {/* PARTE 1: DIAGNÓSTICO GRATUITO */}
       <div style={{ background: c.bg, borderRadius: 12, padding: "2rem", marginBottom: "1.25rem", border: `1px solid ${c.border}` }}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: c.badge, borderRadius: 6, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: c.text, marginBottom: 14, textTransform: "uppercase", letterSpacing: "0.04em" }}>
           <i className={`ti ${plan.icon}`} style={{ fontSize: 14 }} /> {plan.perfil}
@@ -348,7 +356,6 @@ function App() {
         <div style={{ background: "#ffffff", borderRadius: 10, padding: "16px 20px", fontSize: 14, fontStyle: "italic", color: c.text, lineHeight: 1.7, border: `1px solid ${c.border}` }}>{planPremium.propuesta}</div>
       </div>
 
-      {/* SECCIÓN INTERMEDIA: EL CANDADO DE PAGO */}
       {!isPremiumUnlocked && (
         <div style={{ background: "#262626", borderRadius: 12, padding: "2.25rem 2rem", marginBottom: "1.25rem", color: "#fafaf9" }}>
           <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
@@ -376,7 +383,6 @@ function App() {
         </div>
       )}
 
-      {/* PARTE 2: PLAN PREMIUM COMPLETO (Se muestra nítido si pagó, o borroso si no ha pagado) */}
       <div className={!isPremiumUnlocked ? "premium-blur" : ""}>
         <div style={card}>
           <span style={lbl}>Tu plan paso a paso — con herramientas y tiempos exactos</span>
