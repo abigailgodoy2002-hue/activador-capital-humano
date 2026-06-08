@@ -3,86 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Activador de Capital Humano</title>
+  <title>Activador de Capital Humano — Test de Potencial</title>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, sans-serif; background: #f5f5f3; color: #1a1a1a; min-height: 100vh; }
-    input, select, textarea { font-family: inherit; font-size: 14px; padding: 9px 12px; border: 0.5px solid #ccc; border-radius: 8px; width: 100%; outline: none; background: #fff; color: #1a1a1a; }
-    input:focus { border-color: #1a1a1a; box-shadow: 0 0 0 2px rgba(0,0,0,0.08); }
-    button { font-family: inherit; cursor: pointer; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f8f6; color: #262626; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    input { font-family: inherit; font-size: 15px; padding: 12px 16px; border: 1px solid #e5e5e0; border-radius: 8px; width: 100%; outline: none; background: #fff; color: #262626; transition: border-color 0.2s; }
+    input:focus { border-color: #737373; }
+    button { font-family: inherit; cursor: pointer; transition: all 0.2s ease; }
+    a { color: inherit; text-decoration: none; }
+    /* Efecto blur elegante para la sección premium bloqueada */
+    .premium-blur { filter: blur(5px); opacity: 0.3; pointer-events: none; user-select: none; }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
 
-const SHEETS_URL = "https://script.google.com/macros/s/AKfycby1iPESCLXL5xaqzDPWRpigTFNwvvnuw1idKgFdMIq6KDJtFrZ1m22JeBW8SmhvCShn/exec";
-
-const ACCIONES = {
-  empatia: {
-    intro: "Tu don de escucha es tu mayor activo. Acá tenés el camino exacto para convertirlo en ingresos en 15 días.",
-    pasos: [
-      { numero: 1, titulo: "Configurá tu WhatsApp Business", detalle: "Descargá WhatsApp Business y completá tu perfil con foto profesional, descripción del servicio y horario de atención. Activá el mensaje de bienvenida automático: 'Hola! Gracias por escribirme. Soy [tu nombre], especialista en atención al cliente. Te respondo en menos de 1 hora.'" },
-      { numero: 2, titulo: "Armá tu propuesta de valor", detalle: "Escribí en una hoja cómo te vas a presentar: 'Soy Asistente de Atención al Cliente. Gestiono tu WhatsApp para que no pierdas ventas por respuestas lentas. Atiendo consultas, cierro ventas y fidelizo clientes con comunicación cálida y profesional.'" },
-      { numero: 3, titulo: "Identificá tus 10 prospectos", detalle: "Buscá en Instagram o Google: consultorios médicos, estéticas, tiendas online y profesionales independientes de tu zona. Fijate en sus redes si tardan en responder o tienen comentarios sin contestar. Esos son tus clientes ideales." },
-      { numero: 4, titulo: "Enviá tu primer mensaje de prospección", detalle: "Usá el script que te damos abajo. Enviá a 3 personas por día. No mandes el mismo mensaje a todos a la vez — personalizá el nombre y el negocio. El objetivo es conseguir 1 llamada de 10 minutos." },
-      { numero: 5, titulo: "Cerrá tu primer cliente", detalle: "En la llamada de 10 minutos preguntá: '¿Cuántos mensajes recibís por día? ¿Podés atenderlos todos a tiempo?' Escuchá el problema y ofrecé una prueba de 7 días gratis. Si queda satisfecho, cobrás desde el día 8." }
-    ],
-    script_titulo: "Tu mensaje para conseguir el primer cliente",
-    script: "Hola [Nombre]! Vi que tu negocio [nombre del negocio] tiene mucha actividad. Noto que a veces las respuestas en WhatsApp se demoran, lo que puede hacer perder clientes potenciales.\n\nMe especializo en gestión de atención al cliente por WhatsApp — me encargo de responder consultas, dar información y acompañar al cliente hasta la compra, con comunicación cálida y profesional.\n\n¿Te gustaría que coordinemos una llamada de 10 minutos para contarte cómo puedo ayudarte?",
-    consejo_final: "El primer cliente no llega por tener el perfil perfecto — llega por dar el primer mensaje. Enviá hoy, no mañana."
-  },
-  analitico: {
-    intro: "Tu mente ordenada es exactamente lo que los negocios caóticos necesitan. Acá tenés el plan exacto para empezar a cobrar por eso.",
-    pasos: [
-      { numero: 1, titulo: "Descargá las plantillas base", detalle: "Creá en Google Sheets 3 plantillas: (1) Flujo de caja diaria con columnas: fecha, concepto, ingreso, egreso, saldo. (2) Control de stock: producto, cantidad, precio, alerta de reposición. (3) Presupuesto y facturación: cliente, servicio, monto, estado de pago." },
-      { numero: 2, titulo: "Practicá con datos reales o inventados", detalle: "Cargá datos ficticios de un negocio imaginario durante 3 días. Esto te va a permitir mostrar las planillas en acción cuando hables con clientes. Una planilla con datos es mil veces más convincente que una vacía." },
-      { numero: 3, titulo: "Armá tu presentación de servicio", detalle: "No te presentés como 'alguien que sabe Excel'. Tu título es: Asistente de Control Operativo para Negocios. Tu propuesta: 'Te ayudo a frenar las pérdidas invisibles de tu negocio ordenando tus números y stock, para que sepas exactamente cuánto ganás y qué tenés disponible.'" },
-      { numero: 4, titulo: "Identificá negocios con caos administrativo", detalle: "Buscá en tu entorno: locales de ropa, dietéticas, distribuidoras, emprendedores de e-commerce. Si tienen muchos productos y atienden por WhatsApp, probablemente no tienen control de nada. Esos son tus clientes." },
-      { numero: 5, titulo: "Ofrecé una auditoría gratuita de 20 minutos", detalle: "Contactá a 3 emprendedores y ofreceles revisar GRATIS cómo llevan sus números ahora. En esos 20 minutos vas a encontrar el caos — y ahí mostrás cómo tus planillas lo resuelven. El cierre es natural." }
-    ],
-    script_titulo: "Tu mensaje para ofrecer la auditoría gratuita",
-    script: "Hola [Nombre]! Soy [tu nombre], me especializo en control operativo para negocios como el tuyo.\n\nEstoy ofreciendo una auditoría gratuita de 20 minutos para revisar cómo está organizada la parte administrativa de tu negocio — números, stock y facturación.\n\nMuchos negocios tienen pérdidas invisibles simplemente por no tener el control ordenado. En 20 minutos te muestro dónde están y cómo resolverlo.\n\n¿Te interesa? ¿Cuándo tenés 20 minutos esta semana?",
-    consejo_final: "No vendas Excel — vendé tranquilidad. El dueño de negocio no quiere planillas, quiere saber cuánto ganó este mes sin hacer cuentas."
-  },
-  comunicador: {
-    intro: "Tu facilidad para comunicar vale dinero real. Las marcas pagan hoy por exactamente lo que vos hacés de forma natural.",
-    pasos: [
-      { numero: 1, titulo: "Aprendé la fórmula de guion UGC", detalle: "Todo video que vende tiene esta estructura: GANCHO (primeros 3 segundos — una pregunta o afirmación que sorprende) + DOLOR (el problema que tiene tu audiencia) + SOLUCIÓN (el producto como respuesta) + CTA (llamado a la acción claro). Escribí esta fórmula en un papel y tenela a mano siempre." },
-      { numero: 2, titulo: "Armá tu estética de filmación", detalle: "El estándar UGC que las marcas pagan bien: luz natural de frente (cerca de una ventana), fondo neutro y ordenado (pared blanca, estante prolijo), plano medio o primer plano, audio limpio. Practicá con el celular que tenés — no necesitás nada más." },
-      { numero: 3, titulo: "Grabá tu portafolio express", detalle: "Elegí 3 productos que ya tenés en casa (crema, termo, zapatillas, libro). Grabá 1 video de cada uno aplicando la fórmula. No importa que no sean productos de marcas conocidas — lo que mostrás es tu estilo, tu forma de hablar y tu manejo de cámara." },
-      { numero: 4, titulo: "Subí tu portafolio a Instagram o TikTok", detalle: "Creá una cuenta específica para tu trabajo UGC o usá la tuya. Subí los 3 videos con el texto: 'Creadora de contenido UGC disponible para marcas. Contacto por DM.' Esto es tu carta de presentación visual." },
-      { numero: 5, titulo: "Contactá marcas de e-commerce", detalle: "Buscá en Instagram marcas de skincare, moda, accesorios o productos del hogar con menos de 50k seguidores — esas marcas necesitan contenido y no tienen presupuesto para agencias. Escribiles por DM o mail con tu propuesta." }
-    ],
-    script_titulo: "Tu mensaje para contactar marcas",
-    script: "Hola [nombre de la marca]! Soy [tu nombre], creadora de contenido UGC especializada en videos auténticos que generan confianza y conversión.\n\nMe encanta lo que hacen con [nombre del producto o categoría] y me gustaría colaborar creando contenido real y cercano para su comunidad.\n\nTengo disponible mi portafolio con ejemplos de mi estilo. ¿Les interesaría verlo? Trabajo con tarifas accesibles y entrega rápida.\n\n[link a tu perfil o portafolio]",
-    consejo_final: "Tu primer video no tiene que ser perfecto — tiene que ser real. Las marcas no buscan producción de Hollywood, buscan autenticidad. Grabá hoy."
-  },
-  organizador: {
-    intro: "Mientras todos apagan incendios, vos ya tenés todo bajo control. Ese don tiene precio — y es hora de cobrarlo.",
-    pasos: [
-      { numero: 1, titulo: "Elegí tus herramientas de trabajo", detalle: "Definí con qué vas a trabajar: Notion (ideal para bases de datos y wikis de equipo), Trello (ideal para tableros de proyectos visuales) o Asana (ideal para equipos con tareas y deadlines). Creá una cuenta gratuita en la que más te guste y explorála durante 2 días." },
-      { numero: 2, titulo: "Armá una demo de tu sistema", detalle: "Creá un espacio de trabajo ficticio que muestre cómo organizarías los proyectos de un cliente. Por ejemplo: un tablero con columnas 'Por hacer / En proceso / Listo', tareas con fechas límite y etiquetas por prioridad. Eso es tu portafolio." },
-      { numero: 3, titulo: "Definí tu servicio y precio", detalle: "Tu servicio es: Asistente Virtual y Coordinadora de Proyectos. Podés ofrecer: gestión de agenda y reuniones, coordinación de tareas de equipo, seguimiento de proyectos y reportes semanales de avance. Precio sugerido para empezar: paquete mensual de 4-8 horas semanales." },
-      { numero: 4, titulo: "Identificá tus clientes ideales", detalle: "Buscá en LinkedIn o Instagram: coaches, consultores, psicólogos, diseñadores o cualquier profesional independiente que tenga muchos clientes y poco tiempo. Si su bio dice 'agenda completa' o 'lista de espera', ese es tu cliente — está desbordado y necesita ayuda." },
-      { numero: 5, titulo: "Ofrecé una semana de prueba", detalle: "Contactá a 3 profesionales independientes y ofrecé trabajar con ellos 1 semana gratis gestionando su agenda y tareas. Al final de la semana van a ver la diferencia — y van a querer seguir. Ese es tu cierre natural." }
-    ],
-    script_titulo: "Tu mensaje para conseguir el primer cliente",
-    script: "Hola [Nombre]! Vi tu trabajo como [profesión] y noto que tenés mucha demanda — felicitaciones por eso.\n\nSoy [tu nombre], Asistente Virtual especializada en coordinación de proyectos y gestión de agenda. Me encargo de que nada se pierda, nada se olvide y todo avance — para que vos te enfoques en lo que realmente hace crecer tu negocio.\n\nTe propongo una semana de prueba sin costo para que veas cómo trabajo. ¿Tenés 15 minutos esta semana para contarme qué necesitás?",
-    consejo_final: "El caos que vos ves como obvio de resolver, para tu cliente es una carga diaria. No subestimes cuánto vale para ellos tener a alguien que lo ordene."
-  }
-};
+const ACCESS_CODE = "AMAN2026";
 
 const COLORS = {
-  empatia:     { bg: "#E1F5EE", border: "#1D9E75", text: "#085041", accent: "#0F6E56", badge: "#9FE1CB" },
-  analitico:   { bg: "#E6F1FB", border: "#378ADD", text: "#042C53", accent: "#185FA5", badge: "#B5D4F4" },
-  comunicador: { bg: "#FAEEDA", border: "#EF9F27", text: "#412402", accent: "#BA7517", badge: "#FAC775" },
-  organizador: { bg: "#FBEAF0", border: "#D4537E", text: "#4B1528", accent: "#993556", badge: "#F4C0D1" },
+  empatia:     { bg: "#fcf8f5", border: "#dfcfc4", text: "#4a3b32", accent: "#705c51", badge: "#eedfd5" }, 
+  analitico:   { bg: "#f4f5f6", border: "#cbd5e1", text: "#1e293b", accent: "#475569", badge: "#e2e8f0" }, 
+  comunicador: { bg: "#fafaf9", border: "#d6d3d1", text: "#292524", accent: "#57534e", badge: "#e7e5e4" }, 
+  organizador: { bg: "#f5f5f4", border: "#e7e5e4", text: "#1c1917", accent: "#44403c", badge: "#d6d3d1" }, 
 };
 
 const QUESTIONS = [
@@ -115,94 +62,154 @@ const QUESTIONS = [
     { label: "Excel o planillas para llevar registros", value: "analitico" },
     { label: "El celular para grabar y editar videos", value: "comunicador" },
     { label: "Notion, Trello o Google Calendar para organizar", value: "organizador" },
-  ]}
+  ]},
 ];
 
 const PLANS = {
-  empatia:     { perfil: "Gestión de WhatsApp", titulo: "Tu capital es la conexión humana", descripcion: "Tu empatía y capacidad de escucha son activos de alto valor en el mercado actual. Las empresas pierden clientes por mala atención; vos podés ser quien lo evite.", servicio: "Gestor/a de Atención al Cliente vía WhatsApp", propuesta: "«Optimizo la conversión y atención al cliente de tu negocio para que no pierdas ninguna oportunidad de venta, con comunicación cálida y profesional.»", herramientas: ["WhatsApp Business", "Mensajes automatizados", "Sistema de etiquetas", "Guión de bienvenida y cierre"], clientes: ["Consultorios médicos", "Estéticas y spas", "Tiendas online de cercanía"], icon: "ti-message-circle" },
-  analitico:   { perfil: "Asistente de Control Operativo", titulo: "Tu capital es el orden y la precisión", descripcion: "Tu mente analítica vale oro para negocios que crecen en el caos. Mientras otros improvisan, vos ves los números y encontrás las pérdidas invisibles.", servicio: "Asistente de Control Operativo para Negocios", propuesta: "«Te ayudo a frenar las pérdidas invisibles de tu negocio ordenando tus números y stock, para que sepas exactamente cuánto ganás y qué tenés disponible.»", herramientas: ["Flujo de caja diaria", "Control de stock", "Presupuesto y facturación", "Google Sheets profesional"], clientes: ["E-commerce en crecimiento", "Locales de indumentaria", "Distribuidoras medianas"], icon: "ti-chart-line" },
-  comunicador: { perfil: "Creador/a UGC", titulo: "Tu capital es tu voz y tu presencia", descripcion: "Tu facilidad para comunicar es lo que las marcas pagan hoy. El contenido auténtico supera a la publicidad tradicional, y vos tenés ese don de manera natural.", servicio: "Creador/a de Contenido UGC", propuesta: "«Creo videos auténticos y persuasivos para tu marca que generan confianza y convierten seguidores en clientes.»", herramientas: ["Fórmula Gancho + Dolor + Solución", "Kit estética visual UGC", "Portafolio express", "Plantilla de contacto a marcas"], clientes: ["Marcas de e-commerce", "Emprendimientos en crecimiento", "Negocios que buscan contenido real"], icon: "ti-video" },
-  organizador: { perfil: "Asistente Virtual / Project Manager", titulo: "Tu capital es tu capacidad de coordinación", descripcion: "Mientras todos están apagando incendios, vos ya tenés el calendario armado, las tareas asignadas y el proyecto en marcha. Eso tiene precio — y alto.", servicio: "Asistente Virtual y Coordinador/a de Proyectos Remotos", propuesta: "«Gestiono tu agenda, coordinación de equipo y seguimiento de proyectos para que vos te enfoques en lo que realmente hace crecer tu negocio.»", herramientas: ["Notion / Trello / Asana", "Google Calendar y Meet", "Seguimiento de tareas", "Reportes semanales"], clientes: ["Consultores y coaches", "Agencias digitales pequeñas", "Emprendedores con equipos remotos"], icon: "ti-layout-kanban" }
+  empatia:     { perfil: "Gestión de WhatsApp", titulo: "Tu capital es la conexión humana", servicio: "Gestor/a de Atención al Cliente vía WhatsApp", icon: "ti-message-circle" },
+  analitico:   { perfil: "Asistente de Control Operativo", titulo: "Tu capital es el orden y la precisión", servicio: "Asistente de Control Operativo para Negocios", icon: "ti-chart-line" },
+  comunicador: { perfil: "Creador/a UGC", titulo: "Tu capital es tu voz y tu presencia", servicio: "Creador/a de Contenido UGC", icon: "ti-video" },
+  organizador: { perfil: "Asistente Virtual / Project Manager", titulo: "Tu capital es tu capacidad de coordinación", servicio: "Asistente Virtual y Coordinador/a de Proyectos", icon: "ti-layout-kanban" },
+};
+
+const PLANES_PREMIUM = {
+  empatia: {
+    propuesta: "«Soy especialista en atención al cliente por WhatsApp. Me encargo de que ningún mensaje quede sin respuesta, convierto consultas en ventas y fidelizo clientes con comunicación cálida y profesional.»",
+    pasos: [
+      { numero: 1, titulo: "Configurá tu perfil profesional en WhatsApp Business", detalle: "Descargá WhatsApp Business (gratis). Configurá tu foto con fondo neutro, descripción comercial estratégica y mensajes automatizados de bienvenida.", herramientas: [{ nombre: "WhatsApp Business", link: "https://business.whatsapp.com", desc: "App gratuita corporativa" }, { nombre: "Canva", link: "https://canva.com", desc: "Diseño de foto de perfil" }], tiempo: "45 minutos" },
+      { numero: 2, titulo: "Creá tu kit de 10 respuestas rápidas", detalle: "Configurá atajos clave (/precio, /bienvenida, /envio) para ahorrar tiempo y estandarizar la calidad de atención.", herramientas: [{ nombre: "Guía WA Business", link: "https://faq.whatsapp.com/539178204879377", desc: "Tutorial oficial" }], tiempo: "1 hora" },
+      { numero: 3, titulo: "Armá tus paquetes y precios", detalle: "Estructurá ofertas por horas o volumen de mensajes diarios. Ofrecé una semana de prueba inicial para remover objeciones.", herramientas: [{ nombre: "Canva Presentations", link: "https://canva.com", desc: "Plantillas de catálogo" }], tiempo: "1 hora" }
+    ],
+    mensajes: [{ titulo: "Contacto inicial con prospecto", texto: "Hola [Nombre]! Noto que a veces los mensajes en tu canal tardan en responderse. Soy especialista en gestión de WhatsApp... ¿Tenés 15 minutos para un diagnóstico sin cargo?" }],
+    precios: { titulo: "Estrategia de Cobro", items: ["Abonos fijos mensuales", "Cobro 100% por adelantado", "Pruebas gratuitas de 7 días para cerrar."] },
+    frase: "Las personas no pagan por respuestas — pagan por la tranquilidad de saber que sus clientes están bien atendidos."
+  },
+  analitico: {
+    propuesta: "«Soy Asistente de Control Operativo. Organizo los números, stock y facturación de tu negocio en planillas profesionales para que sepas exactamente cuánto ganás.»",
+    pasos: [
+      { numero: 1, titulo: "Creá tus 3 plantillas maestras en Google Sheets", detalle: "Flujo de caja, control de stock automatizado y facturación con formato condicional para deudas.", herramientas: [{ nombre: "Google Sheets", link: "https://sheets.google.com", desc: "Hojas de cálculo gratis" }], tiempo: "3 horas" },
+      { numero: 2, titulo: "Completá las planillas con datos demo", detalle: "Simulá un mes operativo para usarlo como portafolio visual ante tus clientes potenciales.", herramientas: [], tiempo: "1 hora" }
+    ],
+    mensajes: [{ titulo: "Contacto inicial con prospecto", texto: "Hola [Nombre], me especializo en control operativo. ¿Sabés exactamente cuánto ganaste libre el mes pasado? Te ofrezco una revisión de 20 minutos sin cargo..." }],
+    precios: { titulo: "Estrategia de Cobro", items: ["Precio fijo por armado de sistema", "Fee mensual opcional por mantenimiento", "50% de anticipo obligatorio."] },
+    frase: "Los números no mienten — y vos tienes el don de leerlos de forma estratégica."
+  },
+  comunicador: {
+    propuesta: "«Soy Creadora de Contenido UGC. Creo videos auténticos y persuasivos que muestran tu producto de forma real, generando la confianza que convierte seguidores en compradores.»",
+    pasos: [
+      { numero: 1, titulo: "Dominá la fórmula de guion UGC", detalle: "Gancho (0-3 seg), planteo del dilema cotidiano, introducción orgánica del producto y llamado a la acción.", herramientas: [{ nombre: "Notion", link: "https://notion.so", desc: "Organizador de guiones" }], tiempo: "2 horas" },
+      { numero: 2, titulo: "Grabá tu portafolio de 3 videos", detalle: "Elegí elementos en tu casa y produciles piezas dinámicas con subtítulos de lectura veloz usando CapCut.", herramientas: [{ nombre: "CapCut", link: "https://capcut.com", desc: "Editor de video gratuito" }], tiempo: "4 horas" }
+    ],
+    mensajes: [{ titulo: "DM a marca en Instagram", texto: "Hola [Marca]! Soy creadora UGC especializada en videos de conversión. Me encanta lo que hacen y preparé una propuesta visual: [link]..." }],
+    precios: { titulo: "Estrategia de Cobro", items: ["Cobro por video individual o packs mensuales", "Derechos de uso de imagen cobrados extra", "Anticipo de inicio del 50%."] },
+    frase: "Tu voz vale dinero. Las marcas lo saben — solo están esperando que vos se los digas."
+  },
+  organizador: {
+    propuesta: "«Soy Asistente Virtual y Coordinadora de Proyectos. Me encargo de que nada se pierda y todo avance según lo planeado para que te enfoques en expandir tu negocio.»",
+    pasos: [
+      { numero: 1, titulo: "Elegí y dominá tu herramienta principal", detalle: "Especializate en Notion o Trello. Creá tableros Kanban adaptados a la rutina de coaches o consultores.", herramientas: [{ nombre: "Notion", link: "https://notion.so", desc: "Ecosistema de trabajo" }], tiempo: "2 días" },
+      { numero: 2, titulo: "Armá tu sistema demo y grabá un recorrido", detalle: "Estructurá un CRM básico y gestión de contenidos. Grabá la pantalla mostrando cómo soluciona el caos administrativo.", herramientas: [{ nombre: "Loom", link: "https://loom.com", desc: "Grabación de videos cortos" }], tiempo: "3 horas" }
+    ],
+    mensajes: [{ titulo: "Primer mensaje a prospecto", texto: "Hola [Nombre]! Veo que tenés la agenda completa este mes. Soy asistente virtual experta en simplificar procesos... ¿Te gustaría delegar tu administración esta semana sin costo?" }],
+    precios: { titulo: "Estrategia de Cobro", items: ["Paquetes mensuales de horas (5h, 10h, 20h semanales)", "Cobro unificado por adelantado", "Garantía de prueba corta."] },
+    frase: "El caos que vos ves como obvio de resolver, para tu cliente es una carga diaria que lo agota."
+  }
 };
 
 function calcularPerfil(r) {
   const c = { empatia: 0, analitico: 0, comunicador: 0, organizador: 0 };
-  Object.values(r).forEach(v => { if (c[v] !== undefined) c[v]++; });
+  ["q1","q2","q3","q4","q5"].forEach(k => { if (r[k] && c[r[k]] !== undefined) c[r[k]]++; });
   return Object.entries(c).sort((a, b) => b[1] - a[1])[0][0];
 }
 
 function App() {
-  const [step, setStep] = React.useState("intro");
-  const [current, setCurrent] = React.useState(0);
-  const [respuestas, setRespuestas] = React.useState({});
+  // Ahora la app arranca DIRECTO pidiendo el nombre para hacer el test gratis
+  const [step, setStep] = React.useState(() => localStorage.getItem("ach_step") || "nombre");
+  const [current, setCurrent] = React.useState(() => parseInt(localStorage.getItem("ach_current")) || 0);
+  const [respuestas, setRespuestas] = React.useState(() => JSON.parse(localStorage.getItem("ach_respuestas")) || {});
   const [selected, setSelected] = React.useState(null);
-  const [plan, setPlan] = React.useState(null);
-  const [aiPlan, setAiPlan] = React.useState(null);
-  const [aiAccion, setAiAccion] = React.useState(null);
-  const [perfil, setPerfil] = React.useState(null);
-  const [contacto, setContacto] = React.useState({ nombre: "", mail: "", telefono: "" });
-  const [contactoError, setContactoError] = React.useState("");
+  const [nombre, setNombre] = React.useState(() => localStorage.getItem("ach_nombre") || "");
+  
+  // Estado que controla si el Premium está desbloqueado
+  const [isPremiumUnlocked, setIsPremiumUnlocked] = React.useState(() => localStorage.getItem("ach_premium") === "true");
+  const [inputCode, setInputCode] = React.useState("");
+  const [codeError, setCodeError] = React.useState("");
 
-  const reset = () => { setStep("intro"); setCurrent(0); setRespuestas({}); setSelected(null); setPlan(null); setAiPlan(null); setAiAccion(null); setPerfil(null); setContacto({ nombre: "", mail: "", telefono: "" }); setContactoError(""); };
+  const [perfil, setPerfil] = React.useState(() => localStorage.getItem("ach_perfil") || null);
+  const [plan, setPlan] = React.useState(() => perfil ? PLANS[localStorage.getItem("ach_perfil")] : null);
+  const [planPremium, setPlanPremium] = React.useState(() => perfil ? PLANES_PREMIUM[localStorage.getItem("ach_perfil")] : null);
 
-  const enviarContacto = async (p) => {
-    if (!contacto.nombre || !contacto.mail) { setContactoError("Nombre y mail son obligatorios."); return; }
-    setContactoError("");
-    try { await fetch(SHEETS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...contacto, perfil: PLANS[p]?.perfil || p }) }); } catch {}
-    setStep("loadingPlan");
-    generarPlan(p, respuestas);
-  };
+  React.useEffect(() => {
+    localStorage.setItem("ach_step", step);
+    localStorage.setItem("ach_current", current);
+    localStorage.setItem("ach_respuestas", JSON.stringify(respuestas));
+    localStorage.setItem("ach_nombre", nombre);
+    localStorage.setItem("ach_premium", isPremiumUnlocked);
+    if (perfil) localStorage.setItem("ach_perfil", perfil);
+  }, [step, current, respuestas, nombre, perfil, isPremiumUnlocked]);
+
+  const c = perfil ? COLORS[perfil] : COLORS.analitico;
 
   const handleNext = () => {
     if (!selected) return;
     const newResp = { ...respuestas, [QUESTIONS[current].id]: selected };
     setRespuestas(newResp);
     setSelected(null);
-    if (current < QUESTIONS.length - 1) { setCurrent(current + 1); }
-    else { const p = calcularPerfil(newResp); setPerfil(p); setPlan(PLANS[p]); setStep("formulario"); }
+    
+    if (current < QUESTIONS.length - 1) { 
+      setCurrent(current + 1); 
+    } else {
+      const p = calcularPerfil(newResp);
+      setPerfil(p);
+      setPlan(PLANS[p]);
+      setPlanPremium(PLANES_PREMIUM[p]);
+      setStep("resultado");
+    }
   };
 
-  const generarPlan = async (p, resp) => {
-    const planBase = PLANS[p];
-    const prompt = `Sos un coach de activación de capital humano. Perfil dominante: "${planBase.perfil}". Respuestas: ${Object.entries(resp).map(([k,v])=>`${k}:${v}`).join(", ")}. Generá en español argentino (tuteo informal). Respondé SOLO en JSON sin backticks: {"activacion":"mensaje poderoso 2-3 oraciones","objetivo_7_dias":"objetivo concreto 7 días","cliente_ideal":"descripción primer cliente","frase_final":"frase motivadora"}`;
-    try { setAiPlan(await callAI(prompt, 1000)); } catch { setAiPlan(null); }
-    setStep("resultado");
+  const procesarCodigoPremium = () => {
+    if (inputCode.trim().toUpperCase() === ACCESS_CODE) {
+      setIsPremiumUnlocked(true);
+      setCodeError("");
+    } else {
+      setCodeError("Código incorrecto. Verificá tu comprobante o clave.");
+    }
   };
 
-  const generarAccion = async () => {
-    setStep("loadingAccion");
-    const accion = ACCIONES[perfil];
-    setAiAccion(accion);
-    setStep("accion");
+  const reiniciarTest = () => {
+    localStorage.clear();
+    setStep("nombre");
+    setCurrent(0);
+    setRespuestas({});
+    setPerfil(null);
+    setPlan(null);
+    setPlanPremium(null);
+    setNombre("");
+    setInputCode("");
+    setIsPremiumUnlocked(false);
   };
 
-  const progress = Math.round((current / QUESTIONS.length) * 100);
-  const c = perfil ? COLORS[perfil] : COLORS.analitico;
+  const progress = Math.round(((current + 1) / QUESTIONS.length) * 100);
+  const w = { maxWidth: 640, margin: "0 auto", padding: "2.5rem 1.25rem" };
+  const card = { background: "#fff", border: "1px solid #e5e5e0", borderRadius: 12, padding: "1.75rem 2rem", marginBottom: "1.25rem" };
+  const lbl = { fontSize: 11, color: "#737373", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10, display: "block", fontWeight: 600 };
+  const btnD = (bg) => ({ background: bg || "#262626", border: "none", borderRadius: 8, padding: "14px 28px", fontSize: 15, fontWeight: 500, color: "#fff", width: "100%" });
+  const btnO = { background: "transparent", border: "1px solid #d4d4d4", borderRadius: 8, padding: "12px 28px", fontSize: 14, color: "#404040", width: "100%", marginTop: 15, fontWeight: 500 };
 
-  const w = { maxWidth: 600, margin: "0 auto", padding: "2rem 1rem" };
-  const card = { background: "#fff", border: "0.5px solid rgba(0,0,0,0.12)", borderRadius: 12, padding: "1.5rem 1.75rem", marginBottom: "1rem" };
-  const lbl = { fontSize: 11, color: "#888", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8, display: "block" };
-  const btnD = { background: "#1a1a1a", border: "none", borderRadius: 8, padding: "12px 28px", fontSize: 15, fontWeight: 500, cursor: "pointer", color: "#f5f5f0", width: "100%" };
-  const btnO = { background: "transparent", border: "0.5px solid rgba(0,0,0,0.25)", borderRadius: 8, padding: "11px 28px", fontSize: 14, fontWeight: 500, cursor: "pointer", color: "#1a1a1a", width: "100%", marginTop: 10 };
-  const div = { borderTop: "0.5px solid rgba(0,0,0,0.1)", margin: "1.25rem 0" };
-  const hl = (col) => ({ background: col.bg, borderLeft: `3px solid ${col.border}`, borderRadius: "0 8px 8px 0", padding: "12px 16px", fontSize: 14, fontStyle: "italic", color: col.text, lineHeight: 1.7, marginTop: 8 });
-
-  if (step === "intro") return (
-    <div style={w}>
-      <div style={{ background: "#1a1a1a", borderRadius: 12, padding: "2rem 1.75rem", marginBottom: "1rem" }}>
-        <span style={{ ...lbl, color: "#888" }}>Plataforma de activación</span>
-        <h1 style={{ fontSize: 26, fontWeight: 500, color: "#f5f5f0", marginTop: 0, marginBottom: 12 }}>Activador de Capital Humano</h1>
-        <p style={{ fontSize: 15, lineHeight: 1.7, color: "#aaa" }}>No llegaste hasta acá porque estás vacío/a. Llegaste porque todavía no sabés cuánto vale lo que ya tenés.</p>
+  if (step === "nombre") return (
+    <div style={{ ...w, minHeight: "90vh", display: "flex", alignItems: "center" }}>
+      <div style={{ width: "100%" }}>
+        <div style={{ background: "#262626", borderRadius: 12, padding: "2.5rem 2rem", marginBottom: "1.25rem", textAlign: "center" }}>
+          <i className="ti ti-sparkles" style={{ fontSize: 36, color: "#dfcfc4", display: "block", marginBottom: 14 }} />
+          <h1 style={{ fontSize: 25, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10, letterSpacing: "-0.01em" }}>Activador de Capital Humano</h1>
+          <p style={{ fontSize: 15, color: "#d6d3d1", lineHeight: 1.6 }}>Descubrí qué servicio digital se alinea de forma natural con tu potencial e instinto.</p>
+        </div>
+        <div style={card}>
+          <label style={lbl}>¿Cómo te llamás para iniciar tu diagnóstico?</label>
+          <input type="text" placeholder="Tu nombre" value={nombre} onChange={e => setNombre(e.target.value)} onKeyDown={e => e.key === "Enter" && nombre && setStep("scanner")} />
+          <button style={{ ...btnD(), marginTop: 20, opacity: nombre ? 1 : 0.4 }} disabled={!nombre} onClick={() => setStep("scanner")}>Empezar el escáner gratis →</button>
+        </div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: "1rem" }}>
-        {[["ti-clock","5 minutos","#E1F5EE","#085041"],["ti-bolt","Plan con IA","#FAEEDA","#412402"],["ti-device-mobile","Sin inversión","#FBEAF0","#4B1528"]].map(([icon,txt,bg,tc])=>(
-          <div key={txt} style={{ background: bg, borderRadius: 8, padding: "14px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
-            <i className={`ti ${icon}`} style={{ fontSize: 20, color: tc }} />
-            <span style={{ fontSize: 12, fontWeight: 500, color: tc, textAlign: "center" }}>{txt}</span>
-          </div>
-        ))}
-      </div>
-      <button style={btnD} onClick={() => setStep("scanner")}>Activar mi capital →</button>
     </div>
   );
 
@@ -210,129 +217,142 @@ function App() {
     const q = QUESTIONS[current];
     return (
       <div style={w}>
-        <div style={{ height: 4, background: "rgba(0,0,0,0.1)", borderRadius: 2, marginBottom: "1.5rem" }}>
-          <div style={{ height: 4, width: `${progress}%`, background: "#1a1a1a", borderRadius: 2, transition: "width 0.3s" }} />
+        <div style={{ height: 6, background: "#e5e5e0", borderRadius: 3, marginBottom: "2rem", overflow: "hidden" }}>
+          <div style={{ height: 6, width: `${progress}%`, background: "#404040", borderRadius: 3, transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
         </div>
-        <span style={{ ...lbl, color: "#888" }}>{current + 1} de {QUESTIONS.length}</span>
-        <h2 style={{ fontSize: 18, fontWeight: 500, marginBottom: "1.5rem" }}>{q.text}</h2>
-        {q.options.map(opt => (
-          <button key={opt.value} onClick={() => setSelected(opt.value)} style={{ display: "block", width: "100%", textAlign: "left", background: selected === opt.value ? COLORS[opt.value].bg : "#fff", border: selected === opt.value ? `1.5px solid ${COLORS[opt.value].border}` : "0.5px solid rgba(0,0,0,0.15)", borderRadius: 8, padding: "14px 16px", fontSize: 14, cursor: "pointer", color: selected === opt.value ? COLORS[opt.value].text : "#1a1a1a", marginBottom: 10, lineHeight: 1.5, fontWeight: selected === opt.value ? 500 : 400 }}>{opt.label}</button>
-        ))}
-        <button style={{ ...btnD, marginTop: 8, opacity: selected ? 1 : 0.4 }} disabled={!selected} onClick={handleNext}>{current < QUESTIONS.length - 1 ? "Siguiente →" : "Ver mi plan →"}</button>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+          <span style={{ ...lbl, margin: 0 }}>Evaluación de Perfil</span>
+          <span style={{ fontSize: 13, color: "#737373", fontWeight: 500 }}>Pregunta {current + 1} de {QUESTIONS.length}</span>
+        </div>
+        <h2 style={{ fontSize: 20, fontWeight: 500, marginBottom: "1.75rem", lineHeight: 1.4 }}>{q.text}</h2>
+        
+        {q.options.map(opt => {
+          const isSelected = selected === opt.value;
+          const optColor = COLORS[opt.value] || { bg: "#f5f5f4", border: "#d6d3d1", text: "#1c1917" };
+          return (
+            <button key={opt.value} onClick={() => setSelected(opt.value)} 
+              style={{ 
+                display: "block", width: "100%", textAlign: "left", 
+                background: isSelected ? optColor.bg : "#fff", 
+                border: isSelected ? `2px solid ${optColor.border}` : "1px solid #e5e5e0", 
+                borderRadius: 10, padding: "16px 20px", fontSize: 15, 
+                color: isSelected ? optColor.text : "#404040", marginBottom: 12, lineHeight: 1.5
+              }}>
+              {opt.label}
+            </button>
+          );
+        })}
+        
+        <button style={{ ...btnD(), marginTop: 12, opacity: selected ? 1 : 0.4 }} disabled={!selected} onClick={handleNext}>
+          {current < QUESTIONS.length - 1 ? "Siguiente →" : "Ver mi diagnóstico gratis →"}
+        </button>
       </div>
     );
   }
 
-  if (step === "formulario") return (
+  if (step === "resultado" && plan && planPremium) return (
     <div style={w}>
-      <div style={{ background: "#1a1a1a", borderRadius: 12, padding: "1.75rem", marginBottom: "1rem" }}>
-        <i className="ti ti-sparkles" style={{ fontSize: 28, color: c.badge, display: "block", marginBottom: 10 }} />
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: "#f5f5f0", marginTop: 0, marginBottom: 8 }}>¡Tu perfil está listo!</h1>
-        <p style={{ fontSize: 15, lineHeight: 1.7, color: "#aaa" }}>Dejá tus datos para ver tu plan personalizado.</p>
-      </div>
-      <div style={card}>
-        <div style={{ marginBottom: 14 }}>
-          <label style={lbl}>Nombre</label>
-          <input type="text" placeholder="Tu nombre" value={contacto.nombre} onChange={e => setContacto({ ...contacto, nombre: e.target.value })} />
-        </div>
-        <div style={{ marginBottom: 14 }}>
-          <label style={lbl}>Mail</label>
-          <input type="email" placeholder="tu@mail.com" value={contacto.mail} onChange={e => setContacto({ ...contacto, mail: e.target.value })} />
-        </div>
-        <div style={{ marginBottom: 20 }}>
-          <label style={lbl}>Teléfono <span style={{ fontWeight: 400, textTransform: "none", fontSize: 11 }}>(opcional)</span></label>
-          <input type="tel" placeholder="+54 9 11 ..." value={contacto.telefono} onChange={e => setContacto({ ...contacto, telefono: e.target.value })} />
-        </div>
-        {contactoError && <p style={{ fontSize: 13, color: "red", marginBottom: 12 }}>{contactoError}</p>}
-        <button style={{ ...btnD, background: c.accent }} onClick={() => enviarContacto(perfil)}>Ver mi plan →</button>
-        <p style={{ fontSize: 11, color: "#999", textAlign: "center", marginTop: 12 }}>Tus datos están seguros y no se comparten con terceros.</p>
-      </div>
-    </div>
-  );
-
-  if (step === "loadingPlan" || step === "loadingAccion") return (
-    <div style={{ ...w, textAlign: "center", paddingTop: "3rem" }}>
-      <i className="ti ti-loader-2" style={{ fontSize: 32, color: "#888", animation: "spin 1s linear infinite" }} />
-      <p style={{ fontSize: 15, color: "#888", marginTop: 16 }}>{step === "loadingPlan" ? "Procesando tu capital humano…" : "Armando tu plan de acción…"}</p>
-    </div>
-  );
-
-  if (step === "resultado" && plan) return (
-    <div style={w}>
-      <div style={{ background: c.bg, borderRadius: 12, padding: "1.75rem", marginBottom: "1rem", border: `1px solid ${c.border}` }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: c.badge, borderRadius: 8, padding: "4px 12px", fontSize: 12, fontWeight: 500, color: c.text, marginBottom: 12 }}>
-          <i className={`ti ${plan.icon}`} style={{ fontSize: 13 }} />{plan.perfil}
+      {/* PARTE 1: DIAGNÓSTICO GRATUITO (Siempre Visible) */}
+      <div style={{ background: c.bg, borderRadius: 12, padding: "2rem", marginBottom: "1.25rem", border: `1px solid ${c.border}` }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: c.badge, borderRadius: 6, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: c.text, marginBottom: 14, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+          <i className={`ti ${plan.icon}`} style={{ fontSize: 14 }} /> {plan.perfil}
         </span>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: c.text, marginTop: 0, marginBottom: 8 }}>{plan.titulo}</h1>
-        <p style={{ fontSize: 15, lineHeight: 1.7, color: c.accent }}>{plan.descripcion}</p>
-        {aiPlan && <div style={{ marginTop: 14, background: "rgba(255,255,255,0.55)", borderRadius: 8, padding: "12px 16px", fontSize: 14, fontStyle: "italic", color: c.text, lineHeight: 1.7 }}>{aiPlan.activacion}</div>}
+        <h1 style={{ fontSize: 24, fontWeight: 500, color: c.text, marginTop: 0, marginBottom: 10, letterSpacing: "-0.02em" }}>{plan.titulo}</h1>
+        <p style={{ fontSize: 15, lineHeight: 1.6, color: c.accent, marginBottom: 16 }}>Hola {nombre}, este es el perfil que domina tu estructura de talentos de forma natural. Tu servicio ideal para monetizar es: <strong>{plan.servicio}</strong>.</p>
+        <div style={{ background: "#ffffff", borderRadius: 10, padding: "16px 20px", fontSize: 14, fontStyle: "italic", color: c.text, lineHeight: 1.7, border: `1px solid ${c.border}` }}>{planPremium.propuesta}</div>
       </div>
-      <div style={card}>
-        <span style={lbl}>Tu servicio</span>
-        <p style={{ fontSize: 15, fontWeight: 500, marginTop: 4, marginBottom: 10 }}>{plan.servicio}</p>
-        <div style={hl(c)}>{plan.propuesta}</div>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: "1rem" }}>
-        <div style={card}>
-          <span style={lbl}>Herramientas</span>
-          {plan.herramientas.map(h => <div key={h} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ width: 6, height: 6, borderRadius: "50%", background: c.border, flexShrink: 0 }} /><span style={{ fontSize: 13 }}>{h}</span></div>)}
-        </div>
-        <div style={card}>
-          <span style={lbl}>Clientes ideales</span>
-          {plan.clientes.map(cl => <div key={cl} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}><span style={{ width: 6, height: 6, borderRadius: "50%", background: c.border, flexShrink: 0 }} /><span style={{ fontSize: 13 }}>{cl}</span></div>)}
-        </div>
-      </div>
-      {aiPlan && <div style={card}>
-        <span style={lbl}>Objetivo — 7 días</span>
-        <p style={{ fontSize: 14, lineHeight: 1.7, marginTop: 8, marginBottom: 16 }}>{aiPlan.objetivo_7_dias}</p>
-        <span style={lbl}>Tu cliente ideal</span>
-        <p style={{ fontSize: 14, lineHeight: 1.7, marginTop: 8, marginBottom: 16 }}>{aiPlan.cliente_ideal}</p>
-        <div style={{ background: "#1a1a1a", borderRadius: 8, padding: "14px 16px", fontSize: 14, fontWeight: 500, color: "#f5f5f0", lineHeight: 1.7 }}>"{aiPlan.frase_final}"</div>
-      </div>}
-      <div style={{ background: c.bg, border: `1.5px solid ${c.border}`, borderRadius: 12, padding: "1.5rem 1.75rem", marginBottom: "1rem", textAlign: "center" }}>
-        <span style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: c.accent, fontWeight: 600, display: "block", marginBottom: 8 }}>🔓 Plan completo personalizado</span>
-        <p style={{ fontSize: 15, color: c.text, lineHeight: 1.6, marginBottom: 16 }}>Obtené tu plan de acción de 15 días <strong>generado por IA según tu perfil exacto</strong> — con pasos detallados, script listo para usar y estrategia de prospección personalizada.</p>
-        <a href="https://mpago.la/2GtfXSt" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: c.accent, color: "#fff", borderRadius: 8, padding: "13px 28px", fontSize: 15, fontWeight: 600, textDecoration: "none", marginBottom: 8 }}>Obtener plan completo — USD 25 →</a>
-        <p style={{ fontSize: 11, color: c.accent, margin: 0 }}>Pago único · Acceso inmediato · Garantía de satisfacción</p>
-      </div>
-      <button style={{ ...btnD, background: c.accent }} onClick={generarAccion}>Ver una muestra del plan →</button>
-      <button style={btnO} onClick={reset}>Volver a empezar</button>
-    </div>
-  );
 
-  if (step === "accion") return (
-    <div style={w}>
-      <div style={{ background: "#1a1a1a", borderRadius: 12, padding: "1.5rem 1.75rem", marginBottom: "1rem" }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#333", borderRadius: 8, padding: "4px 12px", fontSize: 12, color: "#aaa", marginBottom: 10 }}>
-          <i className="ti ti-map-2" style={{ fontSize: 13 }} />Plan de acción — 15 días
-        </span>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: "#f5f5f0", marginTop: 0, marginBottom: 8 }}>Así lo hacés, paso a paso</h1>
-        {aiAccion && <p style={{ fontSize: 15, lineHeight: 1.7, color: "#bbb" }}>{aiAccion.intro}</p>}
-      </div>
-      <div style={card}>
-        <span style={lbl}>Los 5 pasos concretos</span>
-        {aiAccion ? aiAccion.pasos.map((p, i) => (
-          <div key={p.numero} style={{ display: "flex", gap: 14, marginBottom: i < 4 ? 20 : 0, alignItems: "flex-start" }}>
-            <div style={{ minWidth: 30, height: 30, borderRadius: "50%", background: c.bg, border: `1.5px solid ${c.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 500, color: c.text, flexShrink: 0 }}>{p.numero}</div>
-            <div style={{ paddingTop: 4 }}>
-              <p style={{ fontSize: 14, fontWeight: 500, margin: "0 0 4px" }}>{p.titulo}</p>
-              <p style={{ fontSize: 13, lineHeight: 1.7, color: "#666", margin: 0 }}>{p.detalle}</p>
-            </div>
+      {/* SECCIÓN INTERMEDIA: EL CANDADO DE PAGO (Solo aparece si NO es Premium) */}
+      {!isPremiumUnlocked && (
+        <div style={{ background: "#262626", borderRadius: 12, padding: "2.25rem 2rem", marginBottom: "1.25rem", color: "#fafaf9" }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 12 }}>
+            <i className="ti ti-lock" style={{ fontSize: 22, color: "#dfcfc4" }} />
+            <h3 style={{ fontSize: 18, fontWeight: 500, margin: 0 }}>Desbloqueá tu Plan de Negocios Premium</h3>
           </div>
-        )) : <p style={{ fontSize: 14, color: "#888", fontStyle: "italic" }}>No se pudo generar. Intentá de nuevo.</p>}
+          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6, marginBottom: 20 }}>
+            Accedé a la hoja de ruta paso a paso de 15 días con las herramientas necesarias, plantillas exactas de mensajes de venta para enviar a clientes y la estrategia para definir tus tarifas.
+          </p>
+          
+          <div style={{ background: "rgba(255,255,255,0.05)", padding: "1.25rem", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)" }}>
+            <label style={{ ...lbl, color: "#a3a3a3" }}>¿Ya tenés tu código de acceso?</label>
+            <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+              <input type="text" placeholder="Ingresá tu código aquí" value={inputCode} onChange={e => setInputCode(e.target.value)} onKeyDown={e => e.key === "Enter" && procesarCodigoPremium()} style={{ background: "#fff", color: "#262626" }} />
+              <button onClick={procesarCodigoPremium} style={{ background: "#dfcfc4", color: "#262626", border: "none", borderRadius: 8, padding: "0 20px", fontWeight: 600, fontSize: 14 }}>Activar</button>
+            </div>
+            {codeError && <p style={{ fontSize: 12, color: "#f87171", marginTop: 8, margin: 0 }}>{codeError}</p>}
+          </div>
+          
+          <div style={{ textAlign: "center", marginTop: 20 }}>
+            <a href="https://mpago.la/2GtfXSt" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "transparent", border: "1px solid #dfcfc4", color: "#dfcfc4", borderRadius: 8, padding: "12px", fontSize: 14, fontWeight: 600 }}>
+              Adquirir Plan Premium Completo por USD 25 →
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* PARTE 2: PLAN PREMIUM COMPLETO (Se muestra nítido si pagó, o borroso si no ha pagado) */}
+      <div className={!isPremiumUnlocked ? "premium-blur" : ""}>
+        
+        {/* Pasos */}
+        <div style={card}>
+          <span style={lbl}>Tu plan paso a paso — con herramientas y tiempos exactos</span>
+          {planPremium.pasos.map((p, i) => (
+            <div key={p.numero} style={{ borderTop: i > 0 ? "1px solid #f5f5f4" : "none", paddingTop: i > 0 ? 24 : 8, marginTop: i > 0 ? 24 : 0 }}>
+              <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 12 }}>
+                <div style={{ minWidth: 28, height: 28, borderRadius: "50%", background: c.badge, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: c.text, flexShrink: 0 }}>{p.numero}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", width: "100%", justifyContent: "space-between" }}>
+                  <p style={{ fontSize: 15, fontWeight: 600, margin: 0, color: "#1c1917" }}>{p.titulo}</p>
+                  <span style={{ fontSize: 11, color: c.accent, background: c.bg, borderRadius: 4, padding: "3px 8px", fontWeight: 500, border: `1px solid ${c.border}` }}>⏱ {p.tiempo}</span>
+                </div>
+              </div>
+              <p style={{ fontSize: 14, lineHeight: 1.7, color: "#525252", marginBottom: 14, paddingLeft: 42 }}>{p.detalle}</p>
+              
+              {p.herramientas && p.herramientas.length > 0 && (
+                <div style={{ paddingLeft: 42 }}>
+                  {p.herramientas.map(h => (
+                    <a key={h.nombre} href={isPremiumUnlocked ? h.link : "#"} target={isPremiumUnlocked ? "_blank" : "_self"} rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 10, background: "#fafafa", border: "1px solid #f0f0f0", borderRadius: 8, padding: "10px 14px", marginBottom: 8 }}>
+                      <i className="ti ti-external-link" style={{ fontSize: 14, color: "#737373", flexShrink: 0 }} />
+                      <div>
+                        <p style={{ fontSize: 13, fontWeight: 500, color: "#262626", margin: 0 }}>{h.nombre}</p>
+                        <p style={{ fontSize: 12, color: "#737373", margin: 0, marginTop: 2 }}>{h.desc}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Mensajes */}
+        <div style={{ background: "#ffffff", border: `1px solid ${c.border}`, borderRadius: 12, padding: "1.75rem 2rem", marginBottom: "1.25rem" }}>
+          <span style={{ ...lbl, color: c.text }}>Guiones de Comunicación Inmediata</span>
+          {planPremium.mensajes.map((m, i) => (
+            <div key={i} style={{ marginTop: 20, borderTop: i > 0 ? "1px solid #f5f5f4" : "none", paddingTop: i > 0 ? 20 : 0 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: c.accent, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 8 }}>{m.titulo}</p>
+              <div style={{ background: c.bg, borderRadius: 8, padding: "14px 16px", fontSize: 13.5, lineHeight: 1.7, color: c.text, whiteSpace: "pre-wrap", border: `1px solid ${c.border}` }}>{m.texto}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Precios */}
+        <div style={card}>
+          <span style={lbl}>{planPremium.precios.titulo}</span>
+          {planPremium.precios.items.map((item, i) => (
+            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginTop: 12 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: c.border, flexShrink: 0, marginTop: 7 }} />
+              <p style={{ fontSize: 14, lineHeight: 1.6, color: "#404040", margin: 0 }}>{item}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Cierre */}
+        <div style={{ background: "#262626", borderRadius: 12, padding: "1.75rem", marginBottom: "1.25rem", textAlign: "center" }}>
+          <p style={{ fontSize: 15, fontWeight: 400, color: "#f5f5f4", lineHeight: 1.7, margin: 0, fontStyle: "italic" }}>"{planPremium.frase}"</p>
+        </div>
       </div>
-      {aiAccion && <>
-        <div style={{ background: c.bg, border: `1px solid ${c.border}`, borderRadius: 12, padding: "1.5rem 1.75rem", marginBottom: "1rem" }}>
-          <span style={{ ...lbl, color: c.accent }}>{aiAccion.script_titulo}</span>
-          <div style={{ background: "rgba(255,255,255,0.6)", borderRadius: 8, padding: "1rem 1.25rem", fontSize: 14, lineHeight: 1.8, color: c.text, whiteSpace: "pre-wrap" }}>{aiAccion.script}</div>
-        </div>
-        <div style={{ background: "#1a1a1a", borderRadius: 12, padding: "1.25rem 1.5rem", marginBottom: "1rem" }}>
-          <span style={{ ...lbl, color: "#888" }}>El consejo que marca la diferencia</span>
-          <p style={{ fontSize: 14, lineHeight: 1.7, color: "#f5f5f0", margin: 0 }}>{aiAccion.consejo_final}</p>
-        </div>
-      </>}
-      <button style={btnD} onClick={() => setStep("resultado")}>← Volver a mi perfil</button>
-      <button style={btnO} onClick={reset}>Empezar de nuevo</button>
+
+      <button style={btnO} onClick={reiniciarTest}>Volver al inicio</button>
     </div>
   );
 
