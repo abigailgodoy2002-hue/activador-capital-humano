@@ -22,14 +22,15 @@
   <div id="root"></div>
   <script type="text/babel">
 
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbzR7o3cs4lymxKk8dTA2DspQiNvG5PnAeiozyi4Hqw4qiCKYGQGkoCmAWnYdfgkGUWS/exec";
 const ACCESS_CODE = "AMAN2026";
 
 const COLORS = {
-  empatia:     { bg: "#fcf8f5", border: "#dfcfc4", text: "#4a3b32", accent: "#705c51", badge: "#eedfd5" }, 
-  analitico:   { bg: "#f4f5f6", border: "#cbd5e1", text: "#1e293b", accent: "#475569", badge: "#e2e8f0" }, 
-  comunicador: { bg: "#fafaf9", border: "#d6d3d1", text: "#292524", accent: "#57534e", badge: "#e7e5e4" }, 
-  organizador: { bg: "#f5f5f4", border: "#e7e5e4", text: "#1c1917", accent: "#44403c", badge: "#d6d3d1" }, 
-  bienestar:   { bg: "#f6f7f5", border: "#ccd1c7", text: "#353d2f", accent: "#535e4b", badge: "#e2e6df" }, 
+  empatia:     { bg: "#fcf8f5", border: "#dfcfc4", text: "#4a3b32", accent: "#705c51", badge: "#eedfd5" },
+  analitico:   { bg: "#f4f5f6", border: "#cbd5e1", text: "#1e293b", accent: "#475569", badge: "#e2e8f0" },
+  comunicador: { bg: "#fafaf9", border: "#d6d3d1", text: "#292524", accent: "#57534e", badge: "#e7e5e4" },
+  organizador: { bg: "#f5f5f4", border: "#e7e5e4", text: "#1c1917", accent: "#44403c", badge: "#d6d3d1" },
+  bienestar:   { bg: "#f6f7f5", border: "#ccd1c7", text: "#353d2f", accent: "#535e4b", badge: "#e2e6df" },
 };
 
 const QUESTIONS = [
@@ -103,59 +104,86 @@ const PLANES_PREMIUM = {
   empatia: {
     propuesta: "«Soy especialista en atención al cliente por WhatsApp. Me encargo de que ningún mensaje quede sin respuesta, convierto consultas en ventas y fidelizo clientes con comunicación cálida y profesional.»",
     pasos: [
-      { numero: 1, titulo: "Configurá tu perfil profesional en WhatsApp Business", detalle: "Descargá WhatsApp Business. Configurá tu foto con fondo neutro, descripción comercial estratégica y mensajes automáticos.", herramientas: [{ nombre: "WhatsApp Business", link: "https://business.whatsapp.com", desc: "App corporativa" }], tiempo: "45 minutos" },
-      { numero: 2, titulo: "Creá tu kit de respuestas rápidas", detalle: "Configurá atajos clave (/precio, /bienvenida) para optimizar tus tiempos de interacción diaria.", herramientas: [], tiempo: "1 hora" }
+      { numero: 1, titulo: "Configurá tu perfil profesional en WhatsApp Business", detalle: "Descargá WhatsApp Business. Configurá tu foto con fondo neutro, descripción comercial estratégica y mensajes automáticos.", herramientas: [{ nombre: "WhatsApp Business", link: "https://business.whatsapp.com", desc: "App corporativa gratuita" }], tiempo: "45 minutos" },
+      { numero: 2, titulo: "Creá tu kit de respuestas rápidas", detalle: "Configurá atajos clave (/precio, /bienvenida, /envio, /garantia, /cierre) para optimizar tus tiempos de interacción diaria.", herramientas: [{ nombre: "Guía oficial WA Business", link: "https://faq.whatsapp.com/539178204879377", desc: "Tutorial paso a paso" }], tiempo: "1 hora" },
+      { numero: 3, titulo: "Armá tus paquetes y precios", detalle: "Básico (2 hs/día): $30.000-$45.000/mes. Estándar (4 hs/día): $50.000-$70.000/mes. Premium (tiempo completo): $80.000-$120.000/mes. Siempre ofrecé 7 días de prueba gratuita.", herramientas: [{ nombre: "Canva — Presentación de servicios", link: "https://canva.com/presentations", desc: "Diseñá tu propuesta visual" }], tiempo: "1 hora" },
+      { numero: 4, titulo: "Conseguí tu primer cliente con diagnóstico gratuito", detalle: "Contactá 15 negocios por semana. Ofrecé una revisión gratuita de 15 minutos mostrando cuántos mensajes sin responder tienen y cuántas ventas potenciales están perdiendo.", herramientas: [{ nombre: "Instagram — Búsqueda local", link: "https://instagram.com", desc: "Buscá por zona y categoría" }, { nombre: "Google Maps", link: "https://maps.google.com", desc: "Negocios locales con WhatsApp" }], tiempo: "1 hora por día" },
+      { numero: 5, titulo: "Entregá con sistema y pedí testimonio", detalle: "Establecé desde el día 1: acceso a WA Business, carpeta en Google Drive con guiones aprobados, reporte semanal con métricas. Al mes 1 pedí testimonio escrito o en video.", herramientas: [{ nombre: "Google Drive", link: "https://drive.google.com", desc: "Carpeta compartida con el cliente" }, { nombre: "Google Sheets", link: "https://sheets.google.com", desc: "Reporte semanal de métricas" }], tiempo: "30 min por semana" },
     ],
-    mensajes: [{ titulo: "Contacto inicial con prospecto", texto: "Hola [Nombre]! Noto que a veces los mensajes en tu canal tardan en responderse. ¿Tenés 15 minutos para un diagnóstico sin cargo?" }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Abonos mensuales fijos", "Cobro por adelantado"] },
-    frase: "Las personas no pagan por respuestas — pagan por la tranquilidad de saber que sus clientes están bien atendidos."
+    mensajes: [
+      { titulo: "Primer contacto con prospecto", texto: "Hola [Nombre]! Vi que [negocio] tiene mucha actividad online. Noto que a veces los mensajes tardan en responderse, lo que puede significar ventas perdidas. Soy especialista en gestión de atención al cliente por WhatsApp. Te propongo un diagnóstico gratuito de 15 minutos. ¿Cuándo tenés 15 minutos?" },
+      { titulo: "Seguimiento si no responde", texto: "Hola [Nombre], te escribo de nuevo porque creo que esto puede ser muy útil para [negocio]. Solo quiero mostrarte algo concreto — sin compromiso. ¿Esta semana tenés 15 minutos?" },
+      { titulo: "Cierre de prueba gratuita", texto: "Hola [Nombre]! Terminó la semana de prueba. Te mando el reporte: [X] mensajes atendidos, [Y] horas ahorradas, [Z] consultas convertidas. ¿Seguimos el mes que viene con el paquete [nombre]?" },
+    ],
+    precios: { titulo: "Cómo cobrar", items: ["Básico (2 hs/día): $30.000 — $45.000/mes", "Estándar (4 hs/día): $50.000 — $70.000/mes", "Premium (tiempo completo): $80.000 — $120.000/mes", "Cobrar siempre por adelantado los primeros 15 días del mes", "Medio de pago: Mercado Pago o transferencia bancaria", "Ofrecé 7 días de prueba gratuita para cerrar más fácil"] },
+    frase: "Las personas no pagan por respuestas — pagan por la tranquilidad de saber que sus clientes están bien atendidos. Eso sos vos."
   },
   analitico: {
-    propuesta: "«Soy Asistente de Control Operativo. Organizo los números, stock y facturación de tu negocio en planillas profesionales para que sepas exactamente cuánto ganás.»",
+    propuesta: "«Soy Asistente de Control Operativo. Organizo los números, stock y facturación de tu negocio en planillas profesionales para que sepas exactamente cuánto ganás y dónde se van tus ingresos sin que lo notes.»",
     pasos: [
-      { numero: 1, titulo: "Creá tus 3 plantillas maestras en Google Sheets", detalle: "Flujo de caja, control de stock automatizado y deudas pendientes.", herramientas: [{ nombre: "Google Sheets", link: "https://sheets.google.com", desc: "Planillas gratis" }], tiempo: "3 horas" }
+      { numero: 1, titulo: "Creá tus 3 plantillas maestras en Google Sheets", detalle: "Flujo de caja con dashboard mensual, control de stock con alertas automáticas en rojo y seguimiento de facturación con estados de pago. Estas planillas son tu producto.", herramientas: [{ nombre: "Google Sheets", link: "https://sheets.google.com", desc: "Gratis — todo lo que necesitás" }, { nombre: "Tutorial formato condicional", link: "https://support.google.com/docs/answer/78413", desc: "Alertas automáticas de stock" }], tiempo: "3 horas" },
+      { numero: 2, titulo: "Completá las planillas con datos demo", detalle: "Cargá datos ficticios de un negocio imaginario. Simulá un mes completo e identificá un problema visible. Con datos reales impactás el doble.", herramientas: [], tiempo: "1 hora" },
+      { numero: 3, titulo: "Armá tu presentación de 5 minutos", detalle: "4 slides en Canva: el problema (caos = pérdidas), la solución (tus planillas), el resultado (control total) y tu propuesta (diagnóstico gratuito).", herramientas: [{ nombre: "Canva", link: "https://canva.com/presentations", desc: "Presentación visual gratis" }, { nombre: "Zoom", link: "https://zoom.us", desc: "Reuniones gratuitas 40 min" }], tiempo: "1 hora" },
+      { numero: 4, titulo: "Ofrecé auditoría gratuita de 20 minutos", detalle: "Contactá emprendedores de e-commerce, locales de ropa, dietéticas. Preguntá: ¿sabés cuánto ganaste el mes pasado? ¿Tenés control de stock en tiempo real? Si dicen no, tenés tu cliente.", herramientas: [{ nombre: "Instagram — búsqueda local", link: "https://instagram.com", desc: "Buscá por zona y rubro" }, { nombre: "Grupos de Facebook emprendedores", link: "https://facebook.com/groups", desc: "Buscá 'emprendedores [tu ciudad]'" }], tiempo: "1 hora por día" },
+      { numero: 5, titulo: "Entregá, capacitá y ofrecé mantenimiento", detalle: "Entregá las planillas configuradas + capacitación de 1 hora. Ofrecé dos opciones: entrega única o servicio mensual de mantenimiento. La segunda te da ingreso recurrente.", herramientas: [{ nombre: "Google Drive", link: "https://drive.google.com", desc: "Para entregar las planillas" }, { nombre: "Loom", link: "https://loom.com", desc: "Grabá tutoriales de las planillas" }], tiempo: "2 horas por cliente" },
     ],
-    mensajes: [{ titulo: "Contacto inicial con prospecto", texto: "Hola [Nombre], me especializo en control operativo. ¿Sabés exactamente cuánto ganaste libre el mes pasado?" }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Precio fijo por armado de sistema", "Fee de mantenimiento mensual"] },
-    frase: "Los números no mienten — y vos tienes el don de leerlos de forma estratégica."
+    mensajes: [
+      { titulo: "Primer contacto con prospecto", texto: "Hola [Nombre]! Soy [tu nombre], me especializo en control operativo para negocios. Te propongo una revisión gratuita de 20 minutos para ver cómo están organizados tus números ahora. Sin compromiso. ¿Cuándo tenés 20 minutos?" },
+      { titulo: "Durante la auditoría gratuita", texto: "Contame, en un día típico: ¿cuánto tiempo dedicás a llevar tus cuentas y controlar el stock? ¿Y cuánto de ese tiempo podrías dedicar a crecer si alguien más lo hiciera?" },
+      { titulo: "Cierre de venta", texto: "Hola [Nombre]! Te mando la propuesta: [opción 1 entrega única $XX] o [opción 2 servicio mensual $XX/mes]. ¿Cuál se adapta mejor?" },
+    ],
+    precios: { titulo: "Cómo cobrar", items: ["Entrega única de planillas + capacitación: $25.000 — $40.000", "Servicio mensual de mantenimiento: $15.000 — $25.000/mes", "Pack completo (entrega + 3 meses): $55.000 — $80.000", "Cobrar 50% al inicio y 50% al entregar", "Medio de pago: Mercado Pago o transferencia", "Siempre entregá en Google Sheets compartido"] },
+    frase: "Los números no mienten — y vos tenés el don de leerlos. Cada negocio desordenado es una oportunidad esperándote."
   },
   comunicador: {
     propuesta: "«Soy Creadora de Contenido UGC. Creo videos auténticos y persuasivos que muestran tu producto de forma real, generando la confianza que convierte seguidores en compradores.»",
     pasos: [
-      { numero: 1, titulo: "Dominá la fórmula de guion UGC", detalle: "Gancho de impacto (0-3 seg), planteo del problema cotidiano, solución y llamado a la acción.", herramientas: [], tiempo: "2 horas" }
+      { numero: 1, titulo: "Dominá la fórmula de guion UGC", detalle: "GANCHO (0-3 seg: pregunta o afirmación que sorprende) + CONTEXTO (quién sos) + EXPERIENCIA (cómo usaste el producto) + RESULTADO (cambio concreto) + CTA (llamado a la acción). Escribí un guion de prueba con un producto de tu casa.", herramientas: [{ nombre: "Notion — banco de guiones", link: "https://notion.so", desc: "Guardá tus guiones gratis" }, { nombre: "ChatGPT", link: "https://chat.openai.com", desc: "Para ideas de ganchos creativos" }], tiempo: "2 horas" },
+      { numero: 2, titulo: "Configurá tu setup de filmación", detalle: "Celular en máxima resolución, luz natural de frente, fondo neutro y ordenado, modo avión activado, auriculares para mejor audio. Grabá en 9:16 para Reels/TikTok.", herramientas: [{ nombre: "CapCut", link: "https://capcut.com", desc: "Editor de video gratis — el más usado" }, { nombre: "InShot", link: "https://inshot.com", desc: "Alternativa simple y potente" }], tiempo: "1 hora de práctica" },
+      { numero: 3, titulo: "Grabá tu portafolio de 3 videos", detalle: "Elegí 3 productos de tu casa. Grabá 1 video de cada uno usando la fórmula. Editá con CapCut: subtítulos automáticos, música al 10%, cortes dinámicos. Estos 3 videos son tu portafolio.", herramientas: [{ nombre: "CapCut — subtítulos automáticos", link: "https://capcut.com", desc: "Activá 'Auto Captions'" }, { nombre: "Epidemic Sound", link: "https://epidemicsound.com", desc: "Música libre de derechos (30 días gratis)" }], tiempo: "4 horas" },
+      { numero: 4, titulo: "Publicá y armá tu perfil UGC", detalle: "Subí los 3 videos a Instagram con bio: 'Creadora UGC | Videos que venden | DM para colaboraciones'. O armá un Google Drive con los videos y un PDF de presentación.", herramientas: [{ nombre: "Instagram Creator", link: "https://instagram.com", desc: "Cuenta gratuita para tu trabajo" }, { nombre: "Canva — Media Kit", link: "https://canva.com", desc: "PDF de presentación profesional" }], tiempo: "1 hora" },
+      { numero: 5, titulo: "Contactá marcas y cerrá tu primer contrato", detalle: "Buscá marcas de skincare, moda, accesorios con 1.000 a 50.000 seguidores. También en Billo y Upwork. Precio: USD 15-20/video local, USD 30-50/video internacional.", herramientas: [{ nombre: "Billo", link: "https://billo.app", desc: "Conecta UGC creators con marcas" }, { nombre: "Upwork", link: "https://upwork.com", desc: "Freelance marketplace" }, { nombre: "UGC Marketplace", link: "https://ugcmarketplace.com", desc: "Específico para UGC" }], tiempo: "30 min por día" },
     ],
-    mensajes: [{ titulo: "DM a marca en Instagram", texto: "Hola [Marca]! Soy creadora UGC especializada en videos auténticos... ¿Les interesa una propuesta visual?" }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Precio por pieza individual o pack mensual"] },
+    mensajes: [
+      { titulo: "DM a marca en Instagram", texto: "Hola [nombre de la marca]! Soy [tu nombre], creadora de contenido UGC especializada en videos auténticos que generan confianza y conversión. Me encanta lo que hacen con [producto] y me gustaría crear contenido real para su comunidad. Tengo mi portafolio: [link]. ¿Les interesa una propuesta?" },
+      { titulo: "Email a marca", texto: "Asunto: Propuesta de colaboración UGC — [Tu nombre]\n\nHola equipo de [marca]!\n\nSoy [nombre], creadora de contenido UGC. Creo videos auténticos que generan la confianza que convierte seguidores en compradores.\n\nMi tarifa es de USD [precio] por video. Adjunto mi portafolio.\n\n¿Cuándo podríamos hablar 15 minutos?" },
+      { titulo: "Seguimiento si no responde", texto: "Hola [nombre]! Te escribo de nuevo porque creo que mi contenido puede funcionar muy bien para [marca]. ¿Pudieron ver mi portafolio? Puedo hacer un video de prueba de [producto] para que vean mi estilo antes de comprometerse." },
+    ],
+    precios: { titulo: "Cómo cobrar", items: ["Video individual: USD 15-20 (local) / USD 30-50 (internacional)", "Pack de 3 videos: USD 50-60 (local) / USD 80-120 (internacional)", "Pack mensual 8 videos: USD 120-150 (local) / USD 200-300 (internacional)", "Cobrar 50% antes de grabar y 50% al entregar", "Medio de pago: Payoneer o Wise para marcas internacionales", "Nunca cedas derechos exclusivos sin cobrar extra"] },
     frase: "Tu voz vale dinero. Las marcas lo saben — solo están esperando que vos se los digas."
   },
   organizador: {
-    propuesta: "«Soy Asistente Virtual y Coordinadora de Proyectos. Me encargo de que nada se pierda y todo avance según lo planeado para que te enfoques en expandir tu negocio.»",
+    propuesta: "«Soy Asistente Virtual y Coordinadora de Proyectos. Me encargo de que nada se pierda y todo avance según lo planeado — para que vos te enfoques en lo que realmente hace crecer tu negocio.»",
     pasos: [
-      { numero: 1, titulo: "Elegí tu herramienta principal", detalle: "Especializate en Notion o Trello diseñando espacios de gestión ágiles.", herramientas: [{ nombre: "Notion", link: "https://notion.so", desc: "Workspace" }], tiempo: "2 días" }
-    ],
-    mensajes: [{ titulo: "Primer mensaje a prospecto", texto: "Hola [Nombre]! Sé lo complejo que es gestionar la administración diaria siendo independiente. Te ofrezco una semana de soporte libre..." }],
-    precios: { titulo: "Estrategia de Cobro", items: ["Paquetes mensuales basados en horas semanales"] },
-    frase: "El caos que vos ves como obvio de resolver, para tu cliente es una carga diaria que lo agota."
-  },
-  bienestar: {
-    propuesta: "«Soy Consultora de Bienestar y Estilo de Vida. Ayudo a profesionales desbordados y marcas del nicho holístico a estructurar programas de hábitos saludables, alimentación limpia, rutinas de balance corporal y gestión del estrés.»",
-    pasos: [
-      { numero: 1, titulo: "Estructurá tu catálogo de 3 Rutinas Base", detalle: "Diseñá en Canva tres guías premium en PDF listas para adaptar a clientes: (1) Transición a alimentación limpia/consciente, (2) Rituales de mañana para reducción del estrés corporal, (3) Plan de organización y detox del hogar. Este catálogo estético es tu pilar comercial.", herramientas: [{ nombre: "Canva — Diseños Minimalistas", link: "https://canva.com", desc: "Para armar tus guías estéticas de hábitos" }], tiempo: "4 horas" },
-      { numero: 2, titulo: "Aliate con marcas, estéticas o centros holísticos locales", detalle: "Presentate en centros de yoga, tiendas saludables o estéticas de tu zona. Ofreceles un taller corto de 30 minutos o empaquetar tus guías como un beneficio exclusivo para sus clientes recurrentes. Las alianzas físicas aceleran la confianza.", herramientas: [], tiempo: "3 horas" },
-      { numero: 3, titulo: "Ofrecé una 'Sesión de Diagnóstico de Rutinas' de 20 minutos", detalle: "Contactá personas en transición o emprendedores cansados. Revisá gratis sus tres principales fugas de bienestar: calidad del sueño, organización de comidas y niveles de ansiedad diaria. Cerrá ofreciendo tu acompañamiento de 15 días.", herramientas: [{ nombre: "Instagram — Búsqueda de Nicho", link: "https://instagram.com", desc: "Conectá con perfiles alineados a la vida sana" }], tiempo: "1 hora diaria" }
+      { numero: 1, titulo: "Elegí y dominá tu herramienta principal", detalle: "Elegí UNA: Notion (coaches y consultores), Trello (equipos pequeños) o Asana (proyectos con deadlines). Creá una cuenta gratis y pasá 2 días explorando. Después creá un workspace demo para mostrar a clientes.", herramientas: [{ nombre: "Notion", link: "https://notion.so", desc: "Gratis — el más versátil" }, { nombre: "Trello", link: "https://trello.com", desc: "Ideal para tableros visuales" }, { nombre: "Asana", link: "https://asana.com", desc: "Ideal para proyectos con deadlines" }], tiempo: "2 días" },
+      { numero: 2, titulo: "Armá tu sistema demo completo", detalle: "Creá un workspace ficticio con: tablero de proyectos (Backlog/Esta semana/En proceso/Listo), base de datos de clientes, calendario de contenido del mes, checklist de tareas recurrentes. Grabá un video de 3 minutos mostrando el sistema.", herramientas: [{ nombre: "Loom", link: "https://loom.com", desc: "Grabá el demo en video gratis" }, { nombre: "Google Calendar", link: "https://calendar.google.com", desc: "Gestión de agenda integrada" }], tiempo: "3 horas" },
+      { numero: 3, titulo: "Definí tus servicios y paquetes", detalle: "Starter (5 hs/sem): USD 150-200/mes. Estándar (10 hs/sem): USD 250-350/mes. Premium (20 hs/sem): USD 400-600/mes. Siempre ofrecé 1 semana de prueba gratuita.", herramientas: [{ nombre: "Canva — Propuesta", link: "https://canva.com", desc: "Presentación de paquetes" }, { nombre: "Notion Templates", link: "https://notion.so/templates", desc: "Plantillas de contratos freelance" }], tiempo: "1 hora" },
+      { numero: 4, titulo: "Encontrá y contactá profesionales desbordados", detalle: "Tu cliente ideal lo muestra en redes: 'agenda completa', 'lista de espera'. Buscalos en LinkedIn (coaches, consultores, psicólogos) e Instagram. Si tienen buena reputación pero publican poco, están desbordados.", herramientas: [{ nombre: "LinkedIn", link: "https://linkedin.com", desc: "Buscá 'coach independiente'" }, { nombre: "Facebook Groups", link: "https://facebook.com/groups", desc: "Buscá 'coaches Argentina'" }], tiempo: "1 hora por día" },
+      { numero: 5, titulo: "Semana de prueba gratuita → cliente fijo", detalle: "Ofrecé trabajar 1 semana gratis: configurá su sistema, organizá su agenda, respondé mensajes pendientes, entregá reporte al final. El 80% se convierte en cliente fijo.", herramientas: [{ nombre: "Google Workspace", link: "https://workspace.google.com", desc: "Gmail + Drive + Calendar gratis" }, { nombre: "Calendly", link: "https://calendly.com", desc: "Gestión de agenda del cliente" }], tiempo: "5-10 horas esa semana" },
     ],
     mensajes: [
-      { titulo: "Mensaje a cliente potencial desbordado", texto: "Hola [Nombre]! Noto que llevás un ritmo de trabajo súper intenso. Me especializo en diseño de rutinas de bienestar corporal y alimentación consciente para profesionales desbordados. Te propongo una sesión de diagnóstico de hábitos de 20 minutos sin cargo para armar tu plan de balance diario. ¿Te gustaría coordinar?" },
-      { titulo: "Propuesta de alianza a espacio holístico", texto: "Hola equipo de [Nombre del Centro/Tienda]! Me encanta la vibra de su espacio. Soy asesora de bienestar integral y me encantaría proponerles un taller corto sin costo para su comunidad o empaquetar mis guías de vida saludable con sus servicios. ¿Podríamos charlar 10 minutos esta semana?" }
+      { titulo: "Primer mensaje a prospecto", texto: "Hola [Nombre]! Vi tu trabajo como [profesión] — impresionante lo que lográs. Soy [tu nombre], Asistente Virtual especializada en coordinación de proyectos. Te propongo una semana de prueba sin costo para que veas cómo trabajo. ¿Tenés 15 minutos?" },
+      { titulo: "Durante la reunión de diagnóstico", texto: "Contame, en un día típico: ¿cuánto tiempo dedicás a coordinar reuniones, responder mensajes y hacer seguimiento? ¿Y cuánto de ese tiempo podrías dedicar a tus clientes si alguien más lo hiciera?" },
+      { titulo: "Cierre al final de la semana de prueba", texto: "Hola [Nombre]! Te mando el reporte: organicé [X] tareas, coordiné [Y] reuniones, respondí [Z] mensajes — aproximadamente [N] horas de tu tiempo. ¿Seguimos el mes que viene con el paquete [nombre]?" },
     ],
-    precios: {
-      titulo: "Estrategia de Cobro Holístico",
-      items: [
-        "Plan de acompañamiento personalizado de 15 días (Hábitos + Alimentación).",
-        "Talleres corporativos o grupales online de gestión de energía y nutrición diaria.",
-        "Cobro unificado mediante pasarelas de pago antes de iniciar la primera sesión de mapeo corporativo."
-      ]
-    },
+    precios: { titulo: "Cómo cobrar", items: ["Starter (5 hs/sem): USD 150-200/mes", "Estándar (10 hs/sem): USD 250-350/mes", "Premium (20 hs/sem): USD 400-600/mes", "Cobrar el mes por adelantado antes de empezar", "Medio de pago: Payoneer, Wise o transferencia", "Siempre ofrecé 1 semana de prueba gratuita para cerrar"] },
+    frase: "El caos que vos ves como obvio de resolver, para tu cliente es una carga diaria que lo agota. Vos sos la solución que están buscando."
+  },
+  bienestar: {
+    propuesta: "«Soy Consultora de Bienestar y Estilo de Vida. Ayudo a profesionales desbordados a estructurar programas de hábitos saludables, alimentación limpia y gestión del estrés para recuperar su equilibrio y energía.»",
+    pasos: [
+      { numero: 1, titulo: "Estructurá tu catálogo de 3 Rutinas Base", detalle: "Diseñá en Canva tres guías premium en PDF: (1) Transición a alimentación limpia/consciente, (2) Rituales de mañana para reducción del estrés, (3) Plan de organización y detox del hogar. Este catálogo es tu pilar comercial.", herramientas: [{ nombre: "Canva — Diseños Minimalistas", link: "https://canva.com", desc: "Guías estéticas de hábitos" }], tiempo: "4 horas" },
+      { numero: 2, titulo: "Alianzas con espacios holísticos locales", detalle: "Presentate en centros de yoga, tiendas saludables o estéticas de tu zona. Ofrecé un taller corto de 30 minutos o empaquetar tus guías como beneficio exclusivo para sus clientes. Las alianzas físicas aceleran la confianza.", herramientas: [{ nombre: "Instagram — Búsqueda de Nicho", link: "https://instagram.com", desc: "Conectá con espacios alineados" }], tiempo: "3 horas" },
+      { numero: 3, titulo: "Ofrecé una Sesión de Diagnóstico de Rutinas de 20 minutos", detalle: "Contactá personas en transición o emprendedores cansados. Revisá gratis sus tres principales fugas de bienestar: calidad del sueño, organización de comidas y niveles de ansiedad. Cerrá ofreciendo tu acompañamiento de 15 días.", herramientas: [{ nombre: "Zoom", link: "https://zoom.us", desc: "Sesiones online gratuitas 40 min" }, { nombre: "Calendly", link: "https://calendly.com", desc: "Agenda automática de turnos" }], tiempo: "1 hora diaria" },
+      { numero: 4, titulo: "Creá tu programa de acompañamiento de 15 días", detalle: "Diseñá un programa con: check-in diario por WhatsApp (5 min), receta saludable + hábito del día, ejercicio de respiración o mindfulness, reporte semanal de avance. Entregá por WhatsApp o grupo de Telegram.", herramientas: [{ nombre: "Telegram", link: "https://telegram.org", desc: "Grupos de acompañamiento gratis" }, { nombre: "Canva — Plan de hábitos", link: "https://canva.com", desc: "Diseñá tu programa visual" }], tiempo: "3 horas" },
+      { numero: 5, titulo: "Publicá contenido que demuestre tu expertise", detalle: "Publicá 3 veces por semana en Instagram: receta saludable, tip de bienestar o reflexión sobre equilibrio. El contenido gratuito genera confianza que convierte en clientes. Usá hashtags de nicho: #bienestarintegrall #alimentacionconsciente #habitos saludables.", herramientas: [{ nombre: "Later — programación de posts", link: "https://later.com", desc: "Programá contenido gratis" }, { nombre: "Canva — Templates wellness", link: "https://canva.com", desc: "Diseños de bienestar listos" }], tiempo: "1 hora por semana" },
+    ],
+    mensajes: [
+      { titulo: "Mensaje a cliente potencial desbordado", texto: "Hola [Nombre]! Noto que llevás un ritmo de trabajo muy intenso. Me especializo en diseño de rutinas de bienestar y alimentación consciente para profesionales desbordados. Te propongo una sesión de diagnóstico de hábitos de 20 minutos sin cargo. ¿Te gustaría coordinar?" },
+      { titulo: "Propuesta de alianza a espacio holístico", texto: "Hola equipo de [Nombre]! Me encanta la vibra de su espacio. Soy asesora de bienestar integral y me encantaría proponer un taller corto sin costo para su comunidad o empaquetar mis guías de vida saludable con sus servicios. ¿Podríamos charlar 10 minutos?" },
+      { titulo: "Cierre de programa de 15 días", texto: "Hola [Nombre]! Terminamos los 15 días juntos. Los cambios que lograste: [lista]. Para seguir profundizando tengo disponible el programa mensual. ¿Te gustaría continuar?" },
+    ],
+    precios: { titulo: "Cómo cobrar", items: ["Programa 15 días de acompañamiento: $25.000 — $40.000", "Programa mensual completo: $45.000 — $70.000/mes", "Taller grupal online (hasta 10 personas): $15.000 — $25.000", "Guías digitales en PDF: $5.000 — $10.000 por unidad", "Cobrar por adelantado antes de la primera sesión", "Medio de pago: Mercado Pago"] },
     frase: "El mayor capital de una persona es su salud y equilibrio interno. Vos tenés el mapa para guiarlas de vuelta al eje."
   }
 };
@@ -167,33 +195,19 @@ function calcularPerfil(r) {
 }
 
 function App() {
-  const [step, setStep] = React.useState(() => localStorage.getItem("ach_step") || "nombre");
-  const [current, setCurrent] = React.useState(() => parseInt(localStorage.getItem("ach_current")) || 0);
-  const [respuestas, setRespuestas] = React.useState(() => JSON.parse(localStorage.getItem("ach_respuestas")) || {});
+  const [step, setStep] = React.useState("nombre");
+  const [current, setCurrent] = React.useState(0);
+  const [respuestas, setRespuestas] = React.useState({});
   const [selected, setSelected] = React.useState(null);
-  
-  const [nombre, setNombre] = React.useState(() => localStorage.getItem("ach_nombre") || "");
-  const [email, setEmail] = React.useState(() => localStorage.getItem("ach_email") || "");
-  const [telefono, setTelefono] = React.useState(() => localStorage.getItem("ach_telefono") || "");
-  
-  const [isPremiumUnlocked, setIsPremiumUnlocked] = React.useState(() => localStorage.getItem("ach_premium") === "true");
+  const [nombre, setNombre] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [telefono, setTelefono] = React.useState("");
+  const [isPremiumUnlocked, setIsPremiumUnlocked] = React.useState(false);
   const [inputCode, setInputCode] = React.useState("");
   const [codeError, setCodeError] = React.useState("");
-
-  const [perfil, setPerfil] = React.useState(() => localStorage.getItem("ach_perfil") || null);
-  const [plan, setPlan] = React.useState(() => perfil ? PLANS[perfil] : null);
-  const [planPremium, setPlanPremium] = React.useState(() => perfil ? PLANES_PREMIUM[perfil] : null);
-
-  React.useEffect(() => {
-    localStorage.setItem("ach_step", step);
-    localStorage.setItem("ach_current", current);
-    localStorage.setItem("ach_respuestas", JSON.stringify(respuestas));
-    localStorage.setItem("ach_nombre", nombre);
-    localStorage.setItem("ach_email", email);
-    localStorage.setItem("ach_telefono", telefono);
-    localStorage.setItem("ach_premium", isPremiumUnlocked);
-    if (perfil) localStorage.setItem("ach_perfil", perfil);
-  }, [step, current, respuestas, nombre, email, telefono, perfil, isPremiumUnlocked]);
+  const [perfil, setPerfil] = React.useState(null);
+  const [plan, setPlan] = React.useState(null);
+  const [planPremium, setPlanPremium] = React.useState(null);
 
   const c = perfil ? COLORS[perfil] : COLORS.analitico;
 
@@ -202,39 +216,22 @@ function App() {
     const newResp = { ...respuestas, [QUESTIONS[current].id]: selected };
     setRespuestas(newResp);
     setSelected(null);
-    
-    if (current < QUESTIONS.length - 1) { 
-      setCurrent(current + 1); 
-    } else {
-      setStep("captura");
-    }
+    if (current < QUESTIONS.length - 1) { setCurrent(current + 1); }
+    else { setStep("captura"); }
   };
 
   const enviarDatosYProcesar = async (e) => {
     e.preventDefault();
     if (!nombre || !email || !telefono) return;
-
-    // ENLACE DIRECTO DE ENVÍO CORREGIDO:
-    const formAction = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeu3k2r7O6w6yC6fV9M0hVn8-Z4Y_VqD_V7y2uXv9-kF9z3wA/formResponse";
-    const formData = new FormData();
-    
-    // ASIGNACIÓN DE IDENTIFICADORES SECRETOS VERDADEROS:
-    formData.append("entry.254605929", nombre);
-    formData.append("entry.682390886", email);
-    formData.append("entry.652157797", telefono);
-
-    try {
-      await fetch(formAction, {
-        method: "POST",
-        body: formData,
-        mode: "no-cors"
-      });
-      console.log("Lead registrado correctamente.");
-    } catch (error) {
-      console.error("Error al enviar datos:", error);
-    }
-
     const p = calcularPerfil(respuestas);
+    try {
+      await fetch(SHEETS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, email, telefono, perfil: PLANS[p]?.perfil || p })
+      });
+    } catch (err) { console.error("Error al enviar datos:", err); }
     setPerfil(p);
     setPlan(PLANS[p]);
     setPlanPremium(PLANES_PREMIUM[p]);
@@ -242,27 +239,14 @@ function App() {
   };
 
   const procesarCodigoPremium = () => {
-    if (inputCode.trim().toUpperCase() === ACCESS_CODE) {
-      setIsPremiumUnlocked(true);
-      setCodeError("");
-    } else {
-      setCodeError("Código incorrecto. Verificá tu comprobante.");
-    }
+    if (inputCode.trim().toUpperCase() === ACCESS_CODE) { setIsPremiumUnlocked(true); setCodeError(""); }
+    else setCodeError("Código incorrecto. Verificá tu comprobante.");
   };
 
   const reiniciarTest = () => {
-    localStorage.clear();
-    setStep("nombre");
-    setCurrent(0);
-    setRespuestas({});
-    setPerfil(null);
-    setPlan(null);
-    setPlanPremium(null);
-    setNombre("");
-    setEmail("");
-    setTelefono("");
-    setInputCode("");
-    setIsPremiumUnlocked(false);
+    setStep("nombre"); setCurrent(0); setRespuestas({}); setPerfil(null);
+    setPlan(null); setPlanPremium(null); setNombre(""); setEmail("");
+    setTelefono(""); setInputCode(""); setIsPremiumUnlocked(false);
   };
 
   const progress = Math.round(((current + 1) / QUESTIONS.length) * 100);
@@ -277,8 +261,8 @@ function App() {
       <div style={{ width: "100%" }}>
         <div style={{ background: "#262626", borderRadius: 12, padding: "2.5rem 2rem", marginBottom: "1.25rem", textAlign: "center" }}>
           <i className="ti ti-sparkles" style={{ fontSize: 36, color: "#dfcfc4", display: "block", marginBottom: 14 }} />
-          <h1 style={{ fontSize: 25, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10, letterSpacing: "-0.01em" }}>Activador de Capital Humano</h1>
-          <p style={{ fontSize: 15, color: "#d6d3d1", lineHeight: 1.6 }}>Descubrí qué servicio o propuesta digital se alinea de forma orgánica con tu estructura de talentos e instinto profundo.</p>
+          <h1 style={{ fontSize: 25, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10 }}>Activador de Capital Humano</h1>
+          <p style={{ fontSize: 15, color: "#d6d3d1", lineHeight: 1.6 }}>Descubrí qué servicio se alinea con tu estructura de talentos e instinto profundo.</p>
         </div>
         <div style={card}>
           <label style={lbl}>¿Cómo te llamás para iniciar?</label>
@@ -301,24 +285,15 @@ function App() {
           <span style={{ fontSize: 13, color: "#737373", fontWeight: 500 }}>Pregunta {current + 1} de {QUESTIONS.length}</span>
         </div>
         <h2 style={{ fontSize: 20, fontWeight: 500, marginBottom: "1.75rem", lineHeight: 1.4 }}>{q.text}</h2>
-        
         {q.options.map(opt => {
           const isSelected = selected === opt.value;
           const optColor = COLORS[opt.value] || { bg: "#f5f5f4", border: "#d6d3d1", text: "#1c1917" };
           return (
-            <button key={opt.value} onClick={() => setSelected(opt.value)} 
-              style={{ 
-                display: "block", width: "100%", textAlign: "left", 
-                background: isSelected ? optColor.bg : "#fff", 
-                border: isSelected ? `2px solid ${optColor.border}` : "1px solid #e5e5e0", 
-                borderRadius: 10, padding: "16px 20px", fontSize: 15, 
-                color: isSelected ? optColor.text : "#404040", marginBottom: 12, lineHeight: 1.5
-              }}>
+            <button key={opt.value} onClick={() => setSelected(opt.value)} style={{ display: "block", width: "100%", textAlign: "left", background: isSelected ? optColor.bg : "#fff", border: isSelected ? `2px solid ${optColor.border}` : "1px solid #e5e5e0", borderRadius: 10, padding: "16px 20px", fontSize: 15, color: isSelected ? optColor.text : "#404040", marginBottom: 12, lineHeight: 1.5 }}>
               {opt.label}
             </button>
           );
         })}
-        
         <button style={{ ...btnD(), marginTop: 12, opacity: selected ? 1 : 0.4 }} disabled={!selected} onClick={handleNext}>
           {current < QUESTIONS.length - 1 ? "Siguiente →" : "Finalizar cuestionario →"}
         </button>
@@ -332,16 +307,14 @@ function App() {
         <div style={{ background: "#262626", borderRadius: 12, padding: "2.5rem 2rem", marginBottom: "1.25rem", textAlign: "center" }}>
           <i className="ti ti-mail-opened" style={{ fontSize: 36, color: "#dfcfc4", display: "block", marginBottom: 14 }} />
           <h1 style={{ fontSize: 23, fontWeight: 500, color: "#fafaf9", marginTop: 0, marginBottom: 10 }}>¡Análisis de Potencial Completo!</h1>
-          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6 }}>Ingresá tus datos de contacto para procesar tu diagnóstico y enviarte una copia de respaldo de tu perfil de regalo.</p>
+          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6 }}>Ingresá tus datos para procesar tu diagnóstico.</p>
         </div>
         <form onSubmit={enviarDatosYProcesar} style={card}>
           <label style={lbl}>Correo Electrónico</label>
           <input type="email" placeholder="ejemplo@correo.com" required value={email} onChange={e => setEmail(e.target.value)} />
-          
-          <label style={{...lbl, marginTop: 10}}>Teléfono de Contacto (WhatsApp)</label>
-          <input type="tel" placeholder="Ej: +54 9 11 1234 5678" required value={telefono} onChange={e => setTelefono(e.target.value)} />
-          
-          <button type="submit" style={{ ...btnD(), marginTop: 15 }}>Generar mi Diagnóstico Gratis →</button>
+          <label style={{ ...lbl, marginTop: 4 }}>Teléfono (WhatsApp)</label>
+          <input type="tel" placeholder="+54 9 11 1234 5678" required value={telefono} onChange={e => setTelefono(e.target.value)} />
+          <button type="submit" style={{ ...btnD(), marginTop: 8 }}>Generar mi Diagnóstico Gratis →</button>
         </form>
       </div>
     </div>
@@ -353,8 +326,8 @@ function App() {
         <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: c.badge, borderRadius: 6, padding: "6px 14px", fontSize: 12, fontWeight: 600, color: c.text, marginBottom: 14, textTransform: "uppercase", letterSpacing: "0.04em" }}>
           <i className={`ti ${plan.icon}`} style={{ fontSize: 14 }} /> {plan.perfil}
         </span>
-        <h1 style={{ fontSize: 24, fontWeight: 500, color: c.text, marginTop: 0, marginBottom: 10, letterSpacing: "-0.02em" }}>{plan.titulo}</h1>
-        <p style={{ fontSize: 15, lineHeight: 1.6, color: c.accent, marginBottom: 16 }}>Hola {nombre}, este es el perfil que domina tu estructura de talentos de forma natural. Tu servicio ideal para monetizar es: <strong>{plan.servicio}</strong>.</p>
+        <h1 style={{ fontSize: 24, fontWeight: 500, color: c.text, marginTop: 0, marginBottom: 10 }}>{plan.titulo}</h1>
+        <p style={{ fontSize: 15, lineHeight: 1.6, color: c.accent, marginBottom: 16 }}>Hola {nombre}, tu servicio ideal para monetizar es: <strong>{plan.servicio}</strong>.</p>
         <div style={{ background: "#ffffff", borderRadius: 10, padding: "16px 20px", fontSize: 14, fontStyle: "italic", color: c.text, lineHeight: 1.7, border: `1px solid ${c.border}` }}>{planPremium.propuesta}</div>
       </div>
 
@@ -364,24 +337,18 @@ function App() {
             <i className="ti ti-lock" style={{ fontSize: 22, color: "#dfcfc4" }} />
             <h3 style={{ fontSize: 18, fontWeight: 500, margin: 0 }}>Desbloqueá tu Plan de Negocios Premium</h3>
           </div>
-          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6, marginBottom: 20 }}>
-            Accedé a la hoja de ruta paso a paso de 15 días con las herramientas necesarias, plantillas exactas de mensajes de venta para enviar a clientes y la estrategia para definir tus tarifas.
-          </p>
-          
-          <div style={{ background: "rgba(255,255,255,0.05)", padding: "1.25rem", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)" }}>
+          <p style={{ fontSize: 14, color: "#d6d3d1", lineHeight: 1.6, marginBottom: 20 }}>Accedé a la hoja de ruta paso a paso con herramientas exactas, plantillas de mensajes de venta y estrategia de precios.</p>
+          <div style={{ background: "rgba(255,255,255,0.05)", padding: "1.25rem", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", marginBottom: 16 }}>
             <label style={{ ...lbl, color: "#a3a3a3" }}>¿Ya tenés tu código de acceso?</label>
             <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
-              <input type="text" placeholder="Ingresá tu código aquí" value={inputCode} onChange={e => setInputCode(e.target.value)} onKeyDown={e => e.key === "Enter" && procesarCodigoPremium()} style={{ background: "#fff", color: "#262626" }} />
-              <button onClick={procesarCodigoPremium} style={{ background: "#dfcfc4", color: "#262626", border: "none", borderRadius: 8, padding: "0 20px", fontWeight: 600, fontSize: 14 }}>Activar</button>
+              <input type="text" placeholder="Ingresá tu código aquí" value={inputCode} onChange={e => setInputCode(e.target.value)} onKeyDown={e => e.key === "Enter" && procesarCodigoPremium()} style={{ background: "#fff", color: "#262626", marginBottom: 0 }} />
+              <button onClick={procesarCodigoPremium} style={{ background: "#dfcfc4", color: "#262626", border: "none", borderRadius: 8, padding: "0 20px", fontWeight: 600, fontSize: 14, cursor: "pointer", whiteSpace: "nowrap" }}>Activar</button>
             </div>
-            {codeError && <p style={{ fontSize: 12, color: "#f87171", marginTop: 8, margin: 0 }}>{codeError}</p>}
+            {codeError && <p style={{ fontSize: 12, color: "#f87171", marginTop: 8, marginBottom: 0 }}>{codeError}</p>}
           </div>
-          
-          <div style={{ textAlign: "center", marginTop: 20 }}>
-            <a href="https://mpago.la/2GtfXSt" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "transparent", border: "1px solid #dfcfc4", color: "#dfcfc4", borderRadius: 8, padding: "12px", fontSize: 14, fontWeight: 600 }}>
-              Adquirir Plan Premium Completo por USD 25 →
-            </a>
-          </div>
+          <a href="https://mpago.la/2GtfXSt" target="_blank" rel="noopener noreferrer" style={{ display: "block", background: "transparent", border: "1px solid #dfcfc4", color: "#dfcfc4", borderRadius: 8, padding: "12px", fontSize: 14, fontWeight: 600, textAlign: "center" }}>
+            Adquirir Plan Premium Completo por USD 25 →
+          </a>
         </div>
       )}
 
@@ -398,7 +365,6 @@ function App() {
                 </div>
               </div>
               <p style={{ fontSize: 14, lineHeight: 1.7, color: "#525252", marginBottom: 14, paddingLeft: 42 }}>{p.detalle}</p>
-              
               {p.herramientas && p.herramientas.length > 0 && (
                 <div style={{ paddingLeft: 42 }}>
                   {p.herramientas.map(h => (
